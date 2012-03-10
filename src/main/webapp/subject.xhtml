@@ -19,8 +19,8 @@
 				<p:inputText id="subject_weight" value="#{newSubject.weight}" label="#{messages.subjectWeight}" required="true" />
 				<p:message for="subject_weight" />
 			</h:panelGrid>
-			<p:commandButton value="#{messages.save}" action="#{subjectAction.save}" ajax="false" update=":messages" />
-			<p:commandButton value="#{messages.cancel}" action="#{subjectAction.cancel}" immediate="true" ajax="false" />
+			<p:commandButton value="#{messages.save}" action="#{subjectAction.save}" />
+			<p:commandButton value="#{messages.cancel}" action="#{subjectAction.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>
 </ui:composition>

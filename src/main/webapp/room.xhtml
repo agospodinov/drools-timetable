@@ -27,8 +27,8 @@
 				</p:selectManyCheckbox>
 				<p:message for="room_subjects" />
 			</h:panelGrid>
-			<p:commandButton value="#{messages.save}" action="#{roomAction.save}" ajax="false" update=":messages" />
-			<p:commandButton value="#{messages.cancel}" action="#{roomAction.cancel}" immediate="true" ajax="false" />
+			<p:commandButton value="#{messages.save}" action="#{roomAction.save}" />
+			<p:commandButton value="#{messages.cancel}" action="#{roomAction.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>
 </ui:composition>
