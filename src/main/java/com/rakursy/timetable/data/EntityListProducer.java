@@ -30,9 +30,6 @@ public class EntityListProducer implements Serializable {
 	private List<Room> rooms;
 	private List<Subject> subjects;
 	private List<Teacher> teachers;
-	private List<SchoolClass> schoolClasses;
-	private List<SchoolHour> schoolHours;
-	private List<SchoolDay> schoolDays;
 	
 	@Produces
 	@Named
@@ -58,24 +55,6 @@ public class EntityListProducer implements Serializable {
 		return teachers;
 	}
 	
-	@Produces
-	@Named
-	public List<SchoolClass> getSchoolClasses() {
-		return schoolClasses;
-	}
-	
-	@Produces
-	@Named
-	public List<SchoolHour> getSchoolHours() {
-		return schoolHours;
-	}
-	
-	@Produces
-	@Named
-	public List<SchoolDay> getSchoolDays() {
-		return schoolDays;
-	}
-	
 	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void retrieveEntites() {
@@ -83,9 +62,6 @@ public class EntityListProducer implements Serializable {
 		rooms = em.createQuery("select r from Room r").getResultList();
 		subjects = em.createQuery("select s from Subject s").getResultList();
 		teachers = em.createQuery("select t from Teacher t").getResultList();
-		schoolClasses = em.createQuery("select sc from SchoolClass sc").getResultList();
-		schoolHours = em.createQuery("select sh from SchoolHour sh").getResultList();
-		schoolDays = em.createQuery("select sd from SchoolDay sd").getResultList();
 	}
 	
 }
