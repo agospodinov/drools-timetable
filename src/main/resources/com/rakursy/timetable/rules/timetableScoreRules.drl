@@ -175,6 +175,14 @@ rule "schoolClassesProperlyDistributed"
 		insertLogical(new IntConstraintOccurrence("schoolClassesProperlyDistributed", ConstraintType.NEGATIVE_SOFT, Math.abs($classesInSchoolDay1.intValue() - $classesInSchoolDay2.intValue()), $schoolDay1, $schoolDay2, $classesInSchoolDay1, $classesInSchoolDay2));
 end
 
+rule "periodOffRequestsShouldBeSatisfied"
+	when
+		PeriodOffRequest( $teacher : teacher, $period : period )
+		SchoolClass( teacher == $teacher, period == $period )
+	then
+		insertLogical(new IntConstraintOccurrence("periodOffRequestsShouldBeSatisfied", ConstraintType.NEGATIVE_SOFT, $teacher, $period));
+end
+
 // ############################################################################
 // # Calculate score
 // ############################################################################
