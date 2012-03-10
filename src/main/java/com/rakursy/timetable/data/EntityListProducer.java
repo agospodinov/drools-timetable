@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,9 +17,6 @@ import com.rakursy.timetable.model.SchoolDay;
 import com.rakursy.timetable.model.SchoolHour;
 import com.rakursy.timetable.model.Subject;
 import com.rakursy.timetable.model.Teacher;
-import com.rakursy.timetable.util.qualifiers.Created;
-import com.rakursy.timetable.util.qualifiers.Deleted;
-import com.rakursy.timetable.util.qualifiers.Updated;
 
 @RequestScoped
 public class EntityListProducer implements Serializable {
@@ -78,18 +74,6 @@ public class EntityListProducer implements Serializable {
 	@Named
 	public List<SchoolDay> getSchoolDays() {
 		return schoolDays;
-	}
-	
-	public void entityCreated(@Observes @Created Object o) {
-		retrieveEntites();
-	}
-	
-	public void entityUpdated(@Observes @Updated Object o) {
-		retrieveEntites();
-	}
-	
-	public void entityDeleted(@Observes @Deleted Object o) {
-		retrieveEntites();
 	}
 	
 	@SuppressWarnings("unchecked")

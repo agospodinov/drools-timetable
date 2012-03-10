@@ -130,14 +130,14 @@ rule "schoolClassesMustBeInARow"
 		insertLogical(new IntConstraintOccurrence("schoolClassesMustBeInARow", ConstraintType.NEGATIVE_HARD, Math.abs($period1.getSchoolHour().getActualStartTime() - $period2.getSchoolHour().getActualStartTime()), $period1, $period2, $grade));
 end
 
-#rule "schoolClassesMustStartAtTheBeginnining"
-#	when
-#		$schoolDay : SchoolDay()
-#		$grade : Grade()
-#		not( SchoolClass( studentGroup.grade == $grade, period.schoolHour.actualStartTime == 1, period.schoolDay == $schoolDay ) )
-#	then
-#		insertLogical(new IntConstraintOccurrence("schoolClassesMustStartAtTheBeginnining", ConstraintType.NEGATIVE_HARD, $grade));
-#end
+rule "schoolClassesMustStartAtTheBeginnining"
+	when
+		$schoolDay : SchoolDay()
+		$grade : Grade()
+		not( SchoolClass( studentGroup.grade == $grade, period.schoolHour.actualStartTime == 1, period.schoolDay == $schoolDay ) )
+	then
+		insertLogical(new IntConstraintOccurrence("schoolClassesMustStartAtTheBeginnining", ConstraintType.NEGATIVE_HARD, $grade));
+end
 
 // ############################################################################
 // # Soft constraints

@@ -15,21 +15,21 @@
 			<h:outputText value="#{timetableController.score}" rendered="#{viewScope.shouldRender}" />
 			
 			<p:panel rendered="#{viewScope.shouldRender}">
-				<p:dataTable id="tbl" value="#{timetableController.solution.schoolDays}" var="schoolDay" sortBy="#{schoolDay.dayOfWeek}">
-					<p:column>
-						<p:dataTable value="#{timetableController.periodsForSchoolDays[schoolDay]}" var="period">
-							<f:facet name="header"><h:outputText value="#{schoolDay.dayOfWeek.toString()}" /></f:facet>
-							<p:column style="width:30px" headerText="#{messages.number}">
-								<h:outputText value="#{period.schoolHour.actualStartTime}" />
-							</p:column>
-							
-							<p:columns value="#{timetableController.solution.grades}" var="grade" columnIndexVar="colIndex">
-								<f:facet name="header"><h:outputText value="#{grade.name}" /></f:facet>
-								<h:outputText value="#{timetableController.getSchoolClassForTimeAndGrade(period, grade)}" />
-							</p:columns>
-						</p:dataTable>
-					</p:column>
-				</p:dataTable>
+				<ui:repeat value="#{timetableController.solution.schoolDays}" var="schoolDay">
+					<p:dataTable value="#{timetableController.periodsForSchoolDays[schoolDay]}" var="period">
+						<f:facet name="header"><h:outputText value="#{schoolDay.dayOfWeek.toString()}" /></f:facet>
+						<p:column style="width:30px" headerText="#{messages.number}">
+							<h:outputText value="#{period.schoolHour.actualStartTime}" />
+						</p:column>
+						
+						<p:columns value="#{timetableController.solution.grades}" var="grade" columnIndexVar="colIndex">
+							<f:facet name="header"><h:outputText value="#{grade.name}" /></f:facet>
+							<h:outputText value="#{timetableController.getSchoolClassForTimeAndGrade(period, grade)}" />
+						</p:columns>
+					</p:dataTable>
+					
+					<br />
+				</ui:repeat>
 			</p:panel>
 		</p:outputPanel>
 		

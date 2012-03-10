@@ -77,6 +77,7 @@ public class TimetableController {
 		return periodsForSchoolDays;
 	}
 	
+	// TODO find a way to get the list of broken constraints from the planner's working memory
 	public List<String> getBrokenConstraints() {
 //		WorkingMemory workingMemory = 
 		return null;
