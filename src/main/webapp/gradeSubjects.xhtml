@@ -16,7 +16,7 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
-					<p:selectManyCheckbox value="#{gs.teachers}" required="true">
+					<p:selectManyCheckbox value="#{gs.teachers}" required="true" layout="pageDirection">
 						<f:selectItems value="#{gradeAction.getTeachersForSubject(gs.subject)}" var="t" itemLabel="#{t.name}" />
 						<f:converter converterId="teacherConverter" />
 					</p:selectManyCheckbox>

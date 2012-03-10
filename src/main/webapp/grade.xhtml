@@ -27,7 +27,7 @@
 				<p:message for="grade_classRoom" />
 				
 				<h:outputLabel value="#{messages.subjectList}: *" for="grade_subjects" />
-				<p:selectManyCheckbox id="grade_subjects" value="#{gradeAction.subjects}" label="#{messages.subjectList}">
+				<p:selectManyCheckbox id="grade_subjects" value="#{gradeAction.subjects}" label="#{messages.subjectList}" layout="pageDirection">
 					<f:selectItems value="#{subjects}" var="s" itemLabel="#{s.name}" />
 					<f:converter converterId="subjectConverter" />
 				</p:selectManyCheckbox>
