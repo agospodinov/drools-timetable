@@ -21,7 +21,7 @@ public class RoomChangeMoveFactory extends CachedMoveFactory {
 		List<Move> moves = new ArrayList<Move>();
 		for (SchoolClass schoolClass : timetable.getSchoolClasses()) {
 			for (Room room : timetable.getRooms()) {
-				if (room.getPossibleSubjects().contains(schoolClass.getStudentGroup().getSubject())) {
+				if (room.getPossibleSubjects().contains(schoolClass.getSubject())) {
 					moves.add(new RoomChangeMove(schoolClass, room));
 				}
 			}
