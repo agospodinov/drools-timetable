@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is not required if you don't need any extra configuration. -->
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+	<!-- This descriptor activates the JSF 2.0 Servlet -->
+
+	<!-- Write your navigation rules here. You are encouraged to use CDI for 
+		creating @Named managed beans. -->
+		
+	<application>
+		<locale-config>
+			<default-locale>bg</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>messages</base-name>
+			<var>messages</var>
+		</resource-bundle>
+	</application>
+
+	<navigation-rule>
+		<from-view-id>/grade.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{gradeAction.generateMaps}</from-action>
+			<from-outcome>next</from-outcome>
+			<to-view-id>/gradeSubjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeAction.cancel}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/gradeSubjects.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{gradeAction.splitIntoGroups}</from-action>
+			<from-outcome>next</from-outcome>
+			<to-view-id>/gradeGroups.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeAction.splitIntoGroups}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeAction.cancel}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	<navigation-rule>
+		<from-view-id>/gradeGroups.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{gradeAction.save}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeAction.cancel}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/room.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{roomAction.save}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/rooms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{roomAction.cancel}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/rooms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/teacher.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{teacherAction.save}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherAction.cancel}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/subject.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{subjectAction.save}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/subjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{subjectAction.cancel}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/subjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

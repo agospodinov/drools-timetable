@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h2><h:outputText value="#{messages.teacherList}" /></h2>
+		<p:commandButton action="teacher.xhtml?faces-redirect=true" value="#{messages.newM} #{messages.teacher}" /><br />
+		<p:dataTable var="t" value="#{teachers}" emptyMessage="#{messages.noneAdded} #{messages.teachers}.">
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.name}" /></f:facet>
+                <h:outputText value="#{t.name}" />
+            </p:column>
+		</p:dataTable>
+	</ui:define>
+</ui:composition>

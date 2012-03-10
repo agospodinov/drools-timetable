@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Solver</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet name="css/screen.css" />
+</h:head>
+<h:body>
+	<div id="container">
+		<h:form>
+			<div id="header">
+				<div id="title"><img src="#{request.contextPath}/resources/gfx/hdr.title.png" alt="eDiary"/></div>
+				<div id="menu">
+					<p:commandLink value="#{messages.solver}" action="index.xhtml?faces-redirect=true" immediate="true" />
+					<h:outputText styleClass="divider" value=" | " /> 
+					<p:commandLink value="#{messages.subjectList}" action="subjects.xhtml?faces-redirect=true" immediate="true" />
+					<h:outputText styleClass="divider" value=" | " /> 
+					<p:commandLink value="#{messages.teacherList}" action="teachers.xhtml?faces-redirect=true" immediate="true" />
+					<h:outputText styleClass="divider" value=" | " /> 
+					<p:commandLink value="#{messages.roomList}" action="rooms.xhtml?faces-redirect=true" immediate="true" />
+					<h:outputText styleClass="divider" value=" | " />
+					<p:commandLink value="#{messages.gradeList}" action="grades.xhtml?faces-redirect=true" immediate="true" />
+				</div>
+			</div>
+			
+			<div id="content">
+				<ui:insert name="content" />
+			</div>
+			
+			<div id="footer">
+				<a href="http://www.seamframework.org/"><img src="#{request.contextPath}/resources/gfx/runningon_seamlogo_white.gif" alt="Created with and running on Seam" width="160" height="40"/></a>
+				
+				<h:outputText value="Proudly using " /> 
+				<a href="http://www.jboss.org/drools/drools-expert.html"><img src="#{request.contextPath}/resources/gfx/drools-expert.png" alt="Drools Expert" width="120" height="40"/></a>
+				<h:outputText value=" and " />
+				<a href="http://www.jboss.org/drools/drools-planner.html"><img src="#{request.contextPath}/resources/gfx/drools-planner.png" alt="Drools Planner" width="120" height="40"/></a>
+			</div>
+		</h:form>
+	</div>
+</h:body>
+</html>

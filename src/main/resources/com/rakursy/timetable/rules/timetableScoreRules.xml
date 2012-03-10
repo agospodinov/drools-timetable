@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+	<environmentMode>PRODUCTION</environmentMode>
+	<solutionClass>com.rakursy.timetable.model.Timetable</solutionClass>
+	<planningEntityClass>com.rakursy.timetable.model.SchoolClass</planningEntityClass>
+
+	<scoreDrl>/com/rakursy/timetable/rules/timetableScoreRules.drl</scoreDrl>
+
+	<scoreDefinition>
+		<scoreDefinitionType>HARD_AND_SOFT</scoreDefinitionType>
+	</scoreDefinition>
+
+	<termination>
+		<!-- <maximumSecondsSpend>20</maximumSecondsSpend> -->
+		<scoreAttained>-0hard/-999999soft</scoreAttained>
+	</termination>
+
+	<constructionHeuristic>
+		<constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+	</constructionHeuristic>
+ 	<localSearch>
+		<selector>
+			<selector>
+				<moveFactoryClass>com.rakursy.timetable.solver.move.factory.SchoolClassSwitchMoveFactory</moveFactoryClass>
+			</selector>
+			<selector>
+				<moveFactoryClass>com.rakursy.timetable.solver.move.factory.RoomChangeMoveFactory</moveFactoryClass>
+			</selector>
+			<selector>
+				<moveFactoryClass>com.rakursy.timetable.solver.move.factory.PeriodChangeMoveFactory</moveFactoryClass>
+			</selector>
+		</selector>
+ 		<acceptor>
+ 			<solutionTabuSize>1000</solutionTabuSize>
+			<propertyTabuSize>100</propertyTabuSize>
+			<simulatedAnnealingStartingTemperature>4hard/100soft</simulatedAnnealingStartingTemperature>
+		</acceptor>
+		<forager>
+			<pickEarlyType>NEVER</pickEarlyType>
+			<minimalAcceptedSelection>64</minimalAcceptedSelection><!-- TODO tweak me -->
+		</forager>
+	</localSearch>
+<!-- 	<localSearch>
+		<selector>
+			<selector>
+				<moveFactoryClass>com.rakursy.timetable.solver.move.factory.SchoolClassSwitchMoveFactory</moveFactoryClass>
+			</selector>
+			<selector>
+				<moveFactoryClass>com.rakursy.timetable.solver.move.factory.StudentGroupChangeMoveFactory</moveFactoryClass>
+			</selector>
+			<selector>
+				<moveFactoryClass>com.rakursy.timetable.solver.move.factory.RoomChangeMoveFactory</moveFactoryClass>
+			</selector>
+		</selector>
+		<acceptor>
+			<solutionTabuSize>1000</solutionTabuSize>
+			<propertyTabuSize>100</propertyTabuSize>
+		</acceptor>
+		<forager>
+			<pickEarlyType>NEVER</pickEarlyType>
+			<minimalAcceptedSelection>4</minimalAcceptedSelection>
+		</forager>
+	</localSearch> -->
+</solver>

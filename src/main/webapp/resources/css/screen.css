@@ -1,0 +1,93 @@
+html {
+	height: 100%;
+	background-color: #DBD4C6;
+}
+
+body {
+    margin: 0 auto;
+    padding: 0;
+    background-color: #EAECEE;
+    font-family: Verdana, sans-serif;
+    font-size: 0.9em;
+	width: 867px;;
+}
+
+img {
+	border: 0;
+}
+
+fieldset {
+	border: 0;
+}
+
+#container {
+    margin: 0 auto;
+    padding: 1px;
+    border: 1px solid #C3BBB6;
+    width: 865px; /* subtract 40px from banner width for padding */
+    background-color: #FFFFFF;
+}
+
+#header {
+	float: left;
+	width: 865px;
+	height: 55px;
+	background: url(#{request.contextPath}/resources/gfx/hdr.bg.gif) 0 0 repeat-x;
+}
+
+#title {
+	float: left;
+	padding: 1px 0 6px 15px;
+}
+
+#menu {
+	color: #C7B299;
+	float: right;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: x-small;
+	text-align: right;
+	padding-top: 18px;
+	padding-right: 15px;
+}
+
+#menu a {
+	color: #C7B299;
+	text-decoration: none;
+}
+
+#sidebar {
+    font-size: 0.9em;
+    width: 225px;
+    float: right;
+    border: 1px solid #666666;
+    background: #EAECEE;
+    padding: 0 15px 5px 15px;
+}
+
+#sidebar ul {
+    padding-left: 30px;
+}
+
+#content {
+	padding: 70px 15px 0 15px;
+}
+
+#footer {
+    clear: both;
+    text-align: right;
+    color: #666666;
+    font-size: 0.85em;
+    margin: 2em 1em 0.5em 1em;
+    padding: 1em 0 0 0;
+    border-top: 1px solid #AFAFAF;
+}
+
+code {
+    font-size: 1.1em;
+}
+
+span.invalid {
+    padding-left: 3px;
+    color: red;
+}

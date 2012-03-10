@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#grade.xhtml" PATH="/grade.xhtml"
+  SHAPE="32,945,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#grade.xhtml:0" NAME="item"
+   PATH="/grade.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="next:#{gradeAction.generateMaps}:#gradeSubjects.xhtml"
+    NAME="output" PATH="/gradeSubjects.xhtml"
+    TARGET="rules:#gradeSubjects.xhtml"
+    TITLE="#{gradeAction.generateMaps}:next" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="success:#{gradeAction.cancel}:#grades.xhtml"
+    NAME="output1" PATH="/grades.xhtml" TARGET="rules:#grades.xhtml"
+    TITLE="#{gradeAction.cancel}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#gradeSubjects.xhtml"
+  PATH="/gradeSubjects.xhtml" SHAPE="240,961,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#gradeSubjects.xhtml:0" NAME="item"
+   PATH="/gradeSubjects.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="next:#{gradeAction.splitIntoGroups}:#gradeGroups.xhtml"
+    NAME="output" PATH="/gradeGroups.xhtml"
+    TARGET="rules:#gradeGroups.xhtml"
+    TITLE="#{gradeAction.splitIntoGroups}:next" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{gradeAction.splitIntoGroups}:#grades.xhtml"
+    NAME="output1" PATH="/grades.xhtml" TARGET="rules:#grades.xhtml"
+    TITLE="#{gradeAction.splitIntoGroups}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="success:#{gradeAction.cancel}:#grades.xhtml"
+    NAME="output2" PATH="/grades.xhtml" TARGET="rules:#grades.xhtml"
+    TITLE="#{gradeAction.cancel}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#gradeGroups.xhtml" PATH="/gradeGroups.xhtml"
+  SHAPE="464,913,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#gradeGroups.xhtml:0" NAME="item"
+   PATH="/gradeGroups.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success:#{gradeAction.save}:#grades.xhtml"
+    NAME="output" PATH="/grades.xhtml" TARGET="rules:#grades.xhtml"
+    TITLE="#{gradeAction.save}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="success:#{gradeAction.cancel}:#grades.xhtml"
+    NAME="output1" PATH="/grades.xhtml" TARGET="rules:#grades.xhtml"
+    TITLE="#{gradeAction.cancel}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#room.xhtml" PATH="/room.xhtml"
+  SHAPE="32,1057,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#room.xhtml:0" NAME="item" PATH="/room.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success:#{roomAction.save}:#rooms.xhtml"
+    NAME="output" PATH="/rooms.xhtml" TARGET="rules:#rooms.xhtml"
+    TITLE="#{roomAction.save}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="success:#{roomAction.cancel}:#rooms.xhtml"
+    NAME="output1" PATH="/rooms.xhtml" TARGET="rules:#rooms.xhtml"
+    TITLE="#{roomAction.cancel}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#teacher.xhtml" PATH="/teacher.xhtml"
+  SHAPE="32,1169,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#teacher.xhtml:0" NAME="item"
+   PATH="/teacher.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{teacherAction.save}:#teachers.xhtml" NAME="output"
+    PATH="/teachers.xhtml" TARGET="rules:#teachers.xhtml"
+    TITLE="#{teacherAction.save}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{teacherAction.cancel}:#teachers.xhtml" NAME="output1"
+    PATH="/teachers.xhtml" TARGET="rules:#teachers.xhtml"
+    TITLE="#{teacherAction.cancel}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#subject.xhtml" PATH="/subject.xhtml"
+  SHAPE="32,1281,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#subject.xhtml:0" NAME="item"
+   PATH="/subject.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{subjectAction.save}:#subjects.xhtml" NAME="output"
+    PATH="/subjects.xhtml" TARGET="rules:#subjects.xhtml"
+    TITLE="#{subjectAction.save}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{subjectAction.cancel}:#subjects.xhtml" NAME="output1"
+    PATH="/subjects.xhtml" TARGET="rules:#subjects.xhtml"
+    TITLE="#{subjectAction.cancel}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#rooms.xhtml" PATH="/rooms.xhtml"
+  SHAPE="240,1073,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#grades.xhtml" PATH="/grades.xhtml"
+  SHAPE="688,929,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#subjects.xhtml" PATH="/subjects.xhtml"
+  SHAPE="240,1297,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#teachers.xhtml" PATH="/teachers.xhtml"
+  SHAPE="240,1185,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

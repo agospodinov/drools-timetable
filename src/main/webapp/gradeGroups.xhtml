@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:dataTable value="#{gradeAction.studentGroups}" var="sg">
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.oneSubject}" /></f:facet>
+				<h:outputText value="#{sg.subject}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
+				<h:outputText value="#{sg.teacher}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.studentCount}" /></f:facet>
+				<p:inputText value="#{sg.studentCount}" />
+			</p:column>
+		</p:dataTable>
+		
+		<p:commandButton value="#{messages.save}" action="#{gradeAction.save}" ajax="false" update=":messages" />
+		<p:commandButton value="#{messages.cancel}" action="#{gradeAction.cancel}" immediate="true" ajax="false" />
+	</ui:define>
+</ui:composition>

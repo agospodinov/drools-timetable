@@ -1,0 +1,2 @@
+-- You can use this file to load seed data into the database using SQL statements
+-- insert into Subject(id, name, weight) values (1, 'Test', 5);

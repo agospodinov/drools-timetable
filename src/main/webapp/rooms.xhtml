@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h2><h:outputText value="#{messages.roomList}" /></h2>
+		<p:commandButton action="room.xhtml?faces-redirect=true" value="#{messages.newF} #{messages.room}" /><br />
+		<p:dataTable var="r" value="#{rooms}" emptyMessage="#{messages.noneAdded} #{messages.rooms}.">
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.numberWord}" /></f:facet>
+                <h:outputText value="#{r.number}" />
+            </p:column>
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.roomCapacity}" /></f:facet>
+                <h:outputText value="#{r.capacity}" />
+            </p:column>
+		</p:dataTable>
+	</ui:define>
+</ui:composition>

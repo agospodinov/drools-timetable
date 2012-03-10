@@ -1,0 +1,10 @@
+NOTE: This project is not affiliated with JBoss Drools except that it uses Drools Expert and Drools Planner for optimizing a school timetable schedule. It is a personal project.
+
+The goal of this project is to create a working example of Drools Planner in a Web based environment. 
+Drools Planner is a platform that can solve planning problems using meta-heuristic algorithms such as Tabu Search and Simulated Annealing.
+
+For the non-algorithmic part this project uses Java EE 6 technologies such as JPA, CDI and JSF 2 as well as some modules from Seam Framework 3.
+
+
+LAST NOTE:
+The author of this project is currently participating in local IT competitions with this project. If you contribute, you acknoledge that you will most likely not be accredited for your work in any way, nor are you entitled to any part of schollarships the author may receive.
