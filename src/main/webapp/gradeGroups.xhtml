@@ -6,22 +6,26 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
-		<p:dataTable value="#{gradeAction.studentGroups}" var="sg">
-			<p:column>
-				<f:facet name="header"><h:outputText value="#{messages.oneSubject}" /></f:facet>
-				<h:outputText value="#{sg.subject}" />
-			</p:column>
-			<p:column>
-				<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
-				<h:outputText value="#{sg.teacher}" />
-			</p:column>
-			<p:column>
-				<f:facet name="header"><h:outputText value="#{messages.studentCount}" /></f:facet>
-				<p:inputText value="#{sg.studentCount}" />
-			</p:column>
-		</p:dataTable>
-		
-		<p:commandButton value="#{messages.save}" action="#{gradeAction.save}" ajax="false" update=":messages" />
-		<p:commandButton value="#{messages.cancel}" action="#{gradeAction.cancel}" immediate="true" ajax="false" />
+		<p:panel>
+			<p:focus />
+			
+			<p:dataTable value="#{gradeAction.studentGroups}" var="sg">
+				<p:column>
+					<f:facet name="header"><h:outputText value="#{messages.oneSubject}" /></f:facet>
+					<h:outputText value="#{sg.subject}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
+					<h:outputText value="#{sg.teacher}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="#{messages.studentCount}" /></f:facet>
+					<p:inputText value="#{sg.studentCount}" />
+				</p:column>
+			</p:dataTable>
+			
+			<p:commandButton value="#{messages.save}" action="#{gradeAction.save}" />
+			<p:commandButton value="#{messages.cancel}" action="#{gradeAction.cancel}" immediate="true" />
+		</p:panel>
 	</ui:define>
 </ui:composition>
