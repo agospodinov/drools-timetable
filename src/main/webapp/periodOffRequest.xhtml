@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:panel>
+		
+			<p:focus />
+			
+			<h:panelGrid columns="3">
+				<h:outputLabel value="#{messages.oneTeacher}: *" for="periodOffRequest_teacher" />
+				<p:selectOneMenu id="periodOffRequest_teacher" value="#{newPeriodOffRequest.teacher}" label="#{messages.oneTeacher}" required="true">
+					<f:selectItems value="#{teachers}" var="t" itemLabel="#{t.name}" />
+					<f:converter converterId="teacherConverter" />
+				</p:selectOneMenu>
+				<p:message for="periodOffRequest_teacher" />
+					
+				<h:outputLabel value="#{messages.dayOfWeek}: *" for="periodOffRequest_dayOfWeek" />
+				<p:selectOneMenu id="periodOffRequest_dayOfWeek" value="#{newPeriodOffRequest.dayOfWeek}" label="#{messages.dayOfWeek}" required="true" layout="pageDirection">
+					<f:selectItems value="#{daysOfWeek}" var="d" itemLabel="#{d.toString()}" />
+				</p:selectOneMenu>
+				<p:message for="periodOffRequest_dayOfWeek" />
+				
+				<h:outputLabel value="#{messages.schoolHour}: *" for="periodOffRequest_schoolHour" />
+				<p:selectOneMenu id="periodOffRequest_schoolHour" value="#{newPeriodOffRequest.schoolHourStartTime}" label="#{messages.schoolHour}" required="true" >
+					<f:selectItems value="#{schoolHourStartTimes}" />
+				</p:selectOneMenu>
+				<p:message for="periodOffRequest_schoolHour" />
+			</h:panelGrid>
+			
+			<p:commandButton value="#{messages.save}" action="#{periodOffRequestAction.save}" />
+			<p:commandButton value="#{messages.cancel}" action="#{periodOffRequestAction.cancel}" immediate="true" />
+		</p:panel>
+	</ui:define>
+</ui:composition>

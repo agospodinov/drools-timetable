@@ -21,10 +21,16 @@ public class PeriodOffRequest implements Serializable {
 	@ManyToOne
 	private Teacher teacher;
 	
+	/*
+	 * Since Periods are generated when the solver starts planning, 
+	 * it is not possible to use a Period class here.  
+	 */
 	@NotNull
-	@ManyToOne
-	private Period period;
-
+	private DayOfWeek dayOfWeek;
+	
+	@NotNull
+	private Integer schoolHourStartTime;
+	
 	public Long getId() {
 		return id;
 	}
@@ -41,12 +47,20 @@ public class PeriodOffRequest implements Serializable {
 		this.teacher = teacher;
 	}
 
-	public Period getPeriod() {
-		return period;
+	public DayOfWeek getDayOfWeek() {
+		return dayOfWeek;
 	}
 
-	public void setPeriod(Period period) {
-		this.period = period;
+	public void setDayOfWeek(DayOfWeek dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
+	}
+
+	public Integer getSchoolHourStartTime() {
+		return schoolHourStartTime;
+	}
+
+	public void setSchoolHourStartTime(Integer schoolHourStartTime) {
+		this.schoolHourStartTime = schoolHourStartTime;
 	}
 
 }
