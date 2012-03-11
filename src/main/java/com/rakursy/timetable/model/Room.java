@@ -61,7 +61,7 @@ public class Room implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Room " + number;
+		return number.toString();
 	}
 
 	public Long getId() {

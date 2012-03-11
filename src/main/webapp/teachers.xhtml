@@ -8,7 +8,8 @@
 	<ui:define name="content">
 		<h2><h:outputText value="#{messages.teacherList}" /></h2>
 		<p:commandButton action="#{teacherAction.load}" value="#{messages.newM} #{messages.teacher}" /><br />
-		<p:dataTable var="t" value="#{teachers}" emptyMessage="#{messages.noneAdded} #{messages.teachers}." paginator="true" rows="15">
+		<p:dataTable var="t" value="#{teachers}" emptyMessage="#{messages.noneAdded} #{messages.teachers}." 
+				paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="15">
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.name}" /></f:facet>
                 <h:outputText value="#{t.name}" />

@@ -32,7 +32,7 @@
 		</selector>
  		<acceptor>
  			<solutionTabuSize>1000</solutionTabuSize>
-			<propertyTabuSize>100</propertyTabuSize>
+			<propertyTabuSize>10</propertyTabuSize>
 			<simulatedAnnealingStartingTemperature>4hard/100soft</simulatedAnnealingStartingTemperature>
 		</acceptor>
 		<forager>
