@@ -90,5 +90,14 @@
  <PROCESS-ITEM NAME="rules:#subjects.xhtml" PATH="/subjects.xhtml"
   SHAPE="240,1297,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#teachers.xhtml" PATH="/teachers.xhtml"
-  SHAPE="240,1185,0,0" model-entity="JSFProcessGroup"/>
+  SHAPE="240,1185,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#teachers.xhtml:0" NAME="item"
+   PATH="/teachers.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="periodOffRequests::#periodOffRequests.xhtml"
+    NAME="output" PATH="/periodOffRequests.xhtml"
+    TARGET="rules:#periodOffRequests.xhtml" TITLE="periodOffRequests" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#periodOffRequests.xhtml"
+  PATH="/periodOffRequests.xhtml" SHAPE="464,1233,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

@@ -85,7 +85,7 @@ public class EntityListProducer implements Serializable {
 		subjects = em.createQuery("select s from Subject s").getResultList();
 		teachers = em.createQuery("select t from Teacher t").getResultList();
 		periodOffRequests = em.createQuery("select por from PeriodOffRequest por").getResultList();
-		Collections.addAll(daysOfWeek, DayOfWeek.values());
+		daysOfWeek = Arrays.asList(DayOfWeek.values());
 	}
 	
 }

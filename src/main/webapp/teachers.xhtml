@@ -13,6 +13,11 @@
 				<f:facet name="header"><h:outputText value="#{messages.name}" /></f:facet>
                 <h:outputText value="#{t.name}" />
             </p:column>
+            <p:column>
+            	<h:link outcome="periodOffRequests" value="#{messages.periodOffRequests}">
+            		<f:param name="teacherId" value="#{t.id}" />
+            	</h:link>
+            </p:column>
 		</p:dataTable>
 	</ui:define>
 </ui:composition>

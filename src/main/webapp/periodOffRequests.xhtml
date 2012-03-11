@@ -7,17 +7,36 @@
 	xmlns:s="http://jboss.org/seam/faces"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
+		<p:dataTable id="periodOffRequestList" value="#{periodOffRequestAction.periodOffRequestsForTeacher}" var="por" 
+				paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false" rows="10">
+			<f:facet name="header"><h:outputText value="#{messages.periodOffRequests} #{messages.for} #{por.teacher.name}" /></f:facet>
+			
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
+				<h:outputText value="#{por.teacher.name}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.dayOfWeek}" /></f:facet>
+				<h:outputText value="#{por.dayOfWeek.toString()}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.schoolHour}" /></f:facet>
+				<h:outputText value="#{por.schoolHourStartTime}" />
+			</p:column>
+		</p:dataTable>
+		
+		<br />
+		
 		<p:panel>
 		
 			<p:focus />
 			
 			<h:panelGrid columns="3">
-				<h:outputLabel value="#{messages.oneTeacher}: *" for="periodOffRequest_teacher" />
-				<p:selectOneMenu id="periodOffRequest_teacher" value="#{newPeriodOffRequest.teacher}" label="#{messages.oneTeacher}" required="true">
-					<f:selectItems value="#{teachers}" var="t" itemLabel="#{t.name}" />
-					<f:converter converterId="teacherConverter" />
-				</p:selectOneMenu>
-				<p:message for="periodOffRequest_teacher" />
+				<h:outputLabel value="#{messages.oneTeacher}:" />
+				<h:outputText value="#{periodOffRequestAction.teacher}" />
+				<h:outputText />
 					
 				<h:outputLabel value="#{messages.dayOfWeek}: *" for="periodOffRequest_dayOfWeek" />
 				<p:selectOneMenu id="periodOffRequest_dayOfWeek" value="#{newPeriodOffRequest.dayOfWeek}" label="#{messages.dayOfWeek}" required="true" layout="pageDirection">
@@ -32,8 +51,7 @@
 				<p:message for="periodOffRequest_schoolHour" />
 			</h:panelGrid>
 			
-			<p:commandButton value="#{messages.save}" action="#{periodOffRequestAction.save}" />
-			<p:commandButton value="#{messages.cancel}" action="#{periodOffRequestAction.cancel}" immediate="true" />
+			<p:commandButton value="#{messages.save}" action="#{periodOffRequestAction.save}" update="periodOffRequestList" />
 		</p:panel>
 	</ui:define>
 </ui:composition>
