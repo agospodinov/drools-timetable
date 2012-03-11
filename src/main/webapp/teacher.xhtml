@@ -19,7 +19,7 @@
 				<h:outputLabel value="#{messages.subjectList}: *" for="teacher_subjects" />
 				<p:selectManyCheckbox id="teacher_subjects" value="#{newTeacher.subjects}" label="#{messages.subjectList}" required="true" layout="pageDirection">
 					<f:selectItems value="#{subjects}" var="s" itemLabel="#{s.name}" />
-					<f:converter converterId="subjectConverter" />
+					<s:objectConverter />
 				</p:selectManyCheckbox>
 				<p:message for="teacher_subjects" />
 			</h:panelGrid>

@@ -4,6 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<p:panel>
@@ -22,14 +23,14 @@
 				<h:outputLabel value="#{messages.classRoom}: *" for="grade_classRoom" />
 				<p:selectOneMenu id="grade_classRoom" value="#{newGrade.classRoom}" label="#{messages.classRoom}">
 					<f:selectItems value="#{rooms}" var="r" itemLabel="#{r.number.toString}" />
-					<f:converter converterId="roomConverter" />
+					<s:objectConverter />
 				</p:selectOneMenu>
 				<p:message for="grade_classRoom" />
 				
 				<h:outputLabel value="#{messages.subjectList}: *" for="grade_subjects" />
 				<p:selectManyCheckbox id="grade_subjects" value="#{gradeAction.subjects}" label="#{messages.subjectList}" layout="pageDirection">
 					<f:selectItems value="#{subjects}" var="s" itemLabel="#{s.name}" />
-					<f:converter converterId="subjectConverter" />
+					<s:objectConverter />
 				</p:selectManyCheckbox>
 				<p:message for="grade_subjects" />
 			</h:panelGrid>

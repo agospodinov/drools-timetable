@@ -109,6 +109,16 @@
 	</navigation-rule>
 	
 	<navigation-rule>
+		<from-view-id>/periodOffRequests.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{periodOffRequestAction.save}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
 		<from-view-id>/subject.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{subjectAction.save}</from-action>
@@ -127,10 +137,47 @@
 	<navigation-rule>
 		<from-view-id>/teachers.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>periodOffRequests</from-outcome>
+			<from-action>#{periodOffRequestAction.load}</from-action>
+			<from-outcome>success</from-outcome>
 			<to-view-id>/periodOffRequests.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherAction.load}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/teacher.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
+	<navigation-rule>
+		<from-view-id>/subjects.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{subjectAction.load}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/subject.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/rooms.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{roomAction.load}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/room.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/grades.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{gradeAction.load}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/grade.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
 </faces-config>

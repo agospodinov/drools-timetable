@@ -43,8 +43,7 @@ public class PeriodOffRequestAction extends EntityManageAction<PeriodOffRequest>
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	@PostConstruct
-	public void load() {
+	public String load() {
 		teacher = (Teacher) em.createQuery("select t from Teacher t where t.id = :teacherId")
 				.setParameter("teacherId", Long.parseLong(teacherId.get()))
 				.getSingleResult();
@@ -53,7 +52,13 @@ public class PeriodOffRequestAction extends EntityManageAction<PeriodOffRequest>
 				.setParameter("teacher", teacher)
 				.getResultList();
 		
-		super.load();
+		return super.load();
+	}
+	
+	@Override
+	public String save() {
+		newEntity.setTeacher(teacher);
+		return super.save();
 	}
 
 	@Override

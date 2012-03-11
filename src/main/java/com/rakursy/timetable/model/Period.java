@@ -32,8 +32,8 @@ public class Period implements Serializable {
 	public int hashCode() {
 		return new HashCodeBuilder()
 				.append(id)
-				.append(schoolDay)
-				.append(schoolHour)
+//				.append(schoolDay)
+//				.append(schoolHour)
 				.toHashCode();
 	}
 	
@@ -45,8 +45,8 @@ public class Period implements Serializable {
         	Period other = (Period) obj;
             return new EqualsBuilder()
                     .append(id, other.id)
-                    .append(schoolDay, other.schoolDay)
-                    .append(schoolHour, other.schoolHour)
+//                    .append(schoolDay, other.schoolDay)
+//                    .append(schoolHour, other.schoolHour)
                     .isEquals();
         } else {
             return false;

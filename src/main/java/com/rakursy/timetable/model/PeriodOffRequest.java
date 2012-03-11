@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 @Entity
 public class PeriodOffRequest implements Serializable {
 
@@ -23,13 +26,44 @@ public class PeriodOffRequest implements Serializable {
 	
 	/*
 	 * Since Periods are generated when the solver starts planning, 
-	 * it is not possible to use a Period class here.  
+	 * it is not possible to use a Period reference here.  
 	 */
 	@NotNull
 	private DayOfWeek dayOfWeek;
 	
 	@NotNull
 	private Integer schoolHourStartTime;
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(id)
+				.append(dayOfWeek)
+				.append(schoolHourStartTime)
+				.toHashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof PeriodOffRequest) {
+        	PeriodOffRequest other = (PeriodOffRequest) obj;
+            return new EqualsBuilder()
+                    .append(id, other.id)
+                    .append(dayOfWeek, other.dayOfWeek)
+                    .append(schoolHourStartTime, other.schoolHourStartTime)
+                    .isEquals();
+        } else {
+            return false;
+        }
+	}
+	
+
+	@Override
+	public String toString() {
+		return teacher + " X " + dayOfWeek.name() + ", " + schoolHourStartTime;
+	}
 	
 	public Long getId() {
 		return id;

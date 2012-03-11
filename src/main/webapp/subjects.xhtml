@@ -7,7 +7,7 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<h2><h:outputText value="#{messages.subjectList}" /></h2>
-		<p:commandButton action="subject.xhtml?faces-redirect=true" value="#{messages.newM} #{messages.subject}" /><br />
+		<p:commandButton action="#{subjectAction.load}" value="#{messages.newM} #{messages.subject}" /><br />
 		<p:dataTable var="s" value="#{subjects}" emptyMessage="#{messages.noneAdded} #{messages.subjects}." paginator="true" rows="15">
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.name}" /></f:facet>

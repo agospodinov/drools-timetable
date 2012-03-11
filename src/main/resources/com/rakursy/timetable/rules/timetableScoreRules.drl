@@ -138,12 +138,17 @@ end
 
 rule "schoolClassesMustStartAtTheBeginnining"
 	when
-		$schoolDay : SchoolDay()
 		$grade : Grade()
-		not( SchoolClass( studentGroup.grade == $grade, period.schoolHour.actualStartTime == 1, period.schoolDay == $schoolDay ) )
+		$schoolDay : SchoolDay()
+		SchoolClass( studentGroup.grade == $grade, period.schoolHour.actualStartTime > 1, period.schoolDay == $schoolDay, $period : period )
+		not( exists( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay, period.schoolHour.actualStartTime < $period.schoolHour.actualStartTime ) ) )
+		
+		#$period : Period( schoolHour.actualStartTime == 1 )
+		#not( SchoolClass( studentGroup.grade == $grade, period == $period ) )
 	then
 		insertLogical(new IntConstraintOccurrence("schoolClassesMustStartAtTheBeginnining", ConstraintType.NEGATIVE_HARD, 
-				$grade));
+				$period.getSchoolHour().getActualStartTime(),
+				$grade, $period));
 end
 
 // ############################################################################
@@ -175,10 +180,11 @@ end
 
 rule "schoolClassesProperlyDistributed"
 	when
+		$grade : Grade()
 		$schoolDay1 : SchoolDay()
-		$schoolDay2 : SchoolDay()
-		$classesInSchoolDay1 : Number() from accumulate ( SchoolClass( period.schoolDay == $schoolDay1, $id : id ) , count( $id ) )
-		$classesInSchoolDay2 : Number() from accumulate ( SchoolClass( period.schoolDay == $schoolDay2, $id : id ) , count( $id ) )
+		$schoolDay2 : SchoolDay(this != $schoolDay1)
+		$classesInSchoolDay1 : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay1, $id : id ) , count( $id ) )
+		$classesInSchoolDay2 : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay2, $id : id ) , count( $id ) )
 		eval( Math.abs($classesInSchoolDay1.intValue() - $classesInSchoolDay2.intValue()) > 1 )
 	then
 		insertLogical(new IntConstraintOccurrence("schoolClassesProperlyDistributed", ConstraintType.NEGATIVE_SOFT, 
@@ -188,12 +194,24 @@ end
 
 rule "periodOffRequestsShouldBeSatisfied"
 	when
-		$period : Period( $schoolDay : schoolDay, $schoolHour : schoolHour ) 
-		PeriodOffRequest( $teacher : teacher, dayOfWeek == $schoolDay.dayOfWeek, schoolHourStartTime == $schoolHour.actualStartTime )
-		SchoolClass( teacher == $teacher, period == $period )
+		$grade : Grade()
+		PeriodOffRequest( $teacher : teacher, $dayOfWeek : dayOfWeek, $schoolHourStartTime : schoolHourStartTime )
+		$period : Period( schoolDay.dayOfWeek == $dayOfWeek, schoolHour.actualStartTime == $schoolHourStartTime )
+		SchoolClass( studentGroup.grade == $grade, teacher == $teacher, period == $period )
 	then
 		insertLogical(new IntConstraintOccurrence("periodOffRequestsShouldBeSatisfied", ConstraintType.NEGATIVE_SOFT, 
 				$teacher, $period));
+end
+
+rule "noEmptyDays"
+	when
+		$schoolDay : SchoolDay()
+		$grade : Grade()
+		Number(intValue == 0) from accumulate ( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay, $id : id ) , count( $id ) )
+	then
+		insertLogical(new IntConstraintOccurrence("noEmptyDays", ConstraintType.NEGATIVE_SOFT, 
+				8,
+				$grade));
 end
 
 // ############################################################################

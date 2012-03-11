@@ -12,7 +12,7 @@
 
 	<termination>
 		<!-- <maximumSecondsSpend>20</maximumSecondsSpend> -->
-		<scoreAttained>-0hard/-999999soft</scoreAttained>
+		<scoreAttained>-0hard/-0soft</scoreAttained>
 	</termination>
 
 	<constructionHeuristic>
