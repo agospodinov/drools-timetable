@@ -185,7 +185,7 @@ rule "schoolClassesProperlyDistributed"
 		$schoolDay2 : SchoolDay(this != $schoolDay1)
 		$classesInSchoolDay1 : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay1, $id : id ) , count( $id ) )
 		$classesInSchoolDay2 : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay2, $id : id ) , count( $id ) )
-		eval( Math.abs($classesInSchoolDay1.intValue() - $classesInSchoolDay2.intValue()) > 1 )
+		eval( Math.abs($classesInSchoolDay1.intValue() - $classesInSchoolDay2.intValue()) > 2 )
 	then
 		insertLogical(new IntConstraintOccurrence("schoolClassesProperlyDistributed", ConstraintType.NEGATIVE_SOFT, 
 				Math.abs($classesInSchoolDay1.intValue() - $classesInSchoolDay2.intValue()), 
