@@ -1,6 +1,9 @@
 package com.rakursy.timetable.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,11 +13,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
+import com.rakursy.timetable.model.DayOfWeek;
 import com.rakursy.timetable.model.Grade;
+import com.rakursy.timetable.model.PeriodOffRequest;
 import com.rakursy.timetable.model.Room;
-import com.rakursy.timetable.model.SchoolClass;
-import com.rakursy.timetable.model.SchoolDay;
-import com.rakursy.timetable.model.SchoolHour;
 import com.rakursy.timetable.model.Subject;
 import com.rakursy.timetable.model.Teacher;
 
@@ -30,9 +32,8 @@ public class EntityListProducer implements Serializable {
 	private List<Room> rooms;
 	private List<Subject> subjects;
 	private List<Teacher> teachers;
-	private List<SchoolClass> schoolClasses;
-	private List<SchoolHour> schoolHours;
-	private List<SchoolDay> schoolDays;
+	private List<PeriodOffRequest> periodOffRequests;
+	private List<DayOfWeek> daysOfWeek;
 	
 	@Produces
 	@Named
@@ -60,20 +61,20 @@ public class EntityListProducer implements Serializable {
 	
 	@Produces
 	@Named
-	public List<SchoolClass> getSchoolClasses() {
-		return schoolClasses;
+	public List<PeriodOffRequest> getPeriodOffRequests() {
+		return periodOffRequests;
 	}
 	
 	@Produces
 	@Named
-	public List<SchoolHour> getSchoolHours() {
-		return schoolHours;
+	public List<DayOfWeek> getDaysOfWeek() {
+		return daysOfWeek;
 	}
 	
 	@Produces
 	@Named
-	public List<SchoolDay> getSchoolDays() {
-		return schoolDays;
+	public List<Integer> getSchoolHourStartTimes() {
+		return new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -83,9 +84,8 @@ public class EntityListProducer implements Serializable {
 		rooms = em.createQuery("select r from Room r").getResultList();
 		subjects = em.createQuery("select s from Subject s").getResultList();
 		teachers = em.createQuery("select t from Teacher t").getResultList();
-		schoolClasses = em.createQuery("select sc from SchoolClass sc").getResultList();
-		schoolHours = em.createQuery("select sh from SchoolHour sh").getResultList();
-		schoolDays = em.createQuery("select sd from SchoolDay sd").getResultList();
+		periodOffRequests = em.createQuery("select por from PeriodOffRequest por").getResultList();
+		daysOfWeek = Arrays.asList(DayOfWeek.values());
 	}
 	
 }

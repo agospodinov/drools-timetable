@@ -7,8 +7,9 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<h2><h:outputText value="#{messages.roomList}" /></h2>
-		<p:commandButton action="room.xhtml?faces-redirect=true" value="#{messages.newF} #{messages.room}" /><br />
-		<p:dataTable var="r" value="#{rooms}" emptyMessage="#{messages.noneAdded} #{messages.rooms}.">
+		<p:commandButton action="#{roomAction.load}" value="#{messages.newF} #{messages.room}" /><br />
+		<p:dataTable var="r" value="#{rooms}" emptyMessage="#{messages.noneAdded} #{messages.rooms}." 
+				paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="15">
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.numberWord}" /></f:facet>
                 <h:outputText value="#{r.number}" />
@@ -16,6 +17,10 @@
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.roomCapacity}" /></f:facet>
                 <h:outputText value="#{r.capacity}" />
+            </p:column>
+            <p:column>
+            	<f:facet name="header"><h:outputText value="#{messages.subjectList}" /></f:facet>
+            	<h:outputText value="#{r.possibleSubjects}" />
             </p:column>
 		</p:dataTable>
 	</ui:define>

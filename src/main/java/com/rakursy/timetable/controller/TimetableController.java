@@ -28,6 +28,7 @@ import com.rakursy.timetable.model.DayOfWeek;
 import com.rakursy.timetable.model.Grade;
 import com.rakursy.timetable.model.GradeSubject;
 import com.rakursy.timetable.model.Period;
+import com.rakursy.timetable.model.PeriodOffRequest;
 import com.rakursy.timetable.model.Room;
 import com.rakursy.timetable.model.SchoolClass;
 import com.rakursy.timetable.model.SchoolDay;
@@ -153,6 +154,7 @@ public class TimetableController {
 		List<GradeSubject> gradeSubjects = em.createQuery("select gs from GradeSubject gs").getResultList();
 		List<StudentGroup> studentGroups = em.createQuery("select sg from StudentGroup sg").getResultList();
 		List<Teacher> teachers = em.createQuery("select t from Teacher t").getResultList();
+		List<PeriodOffRequest> periodOffRequests = em.createQuery("select por from PeriodOffRequest por").getResultList();
 		List<Subject> subjects = em.createQuery("select s from Subject s").getResultList();
 		List<Room> rooms = em.createQuery("select r from Room r").getResultList();
 		
@@ -239,6 +241,7 @@ public class TimetableController {
 		timetable.setSchoolDays(schoolDays);
 		timetable.setSchoolHours(schoolHours);
 		timetable.setPeriods(periods);
+		timetable.setPeriodOffRequests(periodOffRequests);
 		timetable.setSchoolClasses(schoolClasses);
 		return timetable;
 	}

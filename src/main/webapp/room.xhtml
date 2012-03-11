@@ -23,7 +23,7 @@
 				<h:outputLabel value="#{messages.subjectList}: *" for="room_subjects" />
 				<p:selectManyCheckbox id="room_subjects" value="#{newRoom.possibleSubjects}" label="#{messages.subjectList}" layout="pageDirection">
 					<f:selectItems value="#{subjects}" var="s" itemLabel="#{s.name}" />
-					<f:converter converterId="subjectConverter" />
+					<s:objectConverter />
 				</p:selectManyCheckbox>
 				<p:message for="room_subjects" />
 			</h:panelGrid>
