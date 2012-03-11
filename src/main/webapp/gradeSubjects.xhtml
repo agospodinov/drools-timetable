@@ -4,6 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<p:panel>
@@ -18,7 +19,7 @@
 					<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
 					<p:selectManyCheckbox value="#{gs.teachers}" required="true" layout="pageDirection">
 						<f:selectItems value="#{gradeAction.getTeachersForSubject(gs.subject)}" var="t" itemLabel="#{t.name}" />
-						<f:converter converterId="teacherConverter" />
+						<s:objectConverter />
 					</p:selectManyCheckbox>
 				</p:column>
 				<p:column>

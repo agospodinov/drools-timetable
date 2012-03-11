@@ -7,7 +7,7 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<h2><h:outputText value="#{messages.gradeList}" /></h2>
-		<p:commandButton action="grade.xhtml?faces-redirect=true" value="#{messages.newM} #{messages.grade}" /><br />
+		<p:commandButton action="#{gradeAction.load}" value="#{messages.newM} #{messages.grade}" /><br />
 		<p:dataTable var="g" value="#{grades}" emptyMessage="#{messages.noneAdded} #{messages.grades}." paginator="true" rows="15">
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.gradeName}" /></f:facet>

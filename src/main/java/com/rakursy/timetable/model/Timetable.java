@@ -19,6 +19,7 @@ public class Timetable implements Solution<HardAndSoftScore> {
 	private List<Subject> subjects;
 	private List<Room> rooms;
 	private List<Teacher> teachers;
+	private List<PeriodOffRequest> periodOffRequests;
 	private List<Period> periods;
 	
 	// Generated facts
@@ -77,6 +78,22 @@ public class Timetable implements Solution<HardAndSoftScore> {
 	public void setTeachers(List<Teacher> teachers) {
 		this.teachers = teachers;
 	}
+	
+	public List<PeriodOffRequest> getPeriodOffRequests() {
+		return periodOffRequests;
+	}
+
+	public void setPeriodOffRequests(List<PeriodOffRequest> periodOffRequests) {
+		this.periodOffRequests = periodOffRequests;
+	}
+
+	public List<Period> getPeriods() {
+		return periods;
+	}
+	
+	public void setPeriods(List<Period> periods) {
+		this.periods = periods;
+	}
 
 	public List<SchoolHour> getSchoolHours() {
 		return this.schoolHours;
@@ -92,14 +109,6 @@ public class Timetable implements Solution<HardAndSoftScore> {
 
 	public void setSchoolDays(List<SchoolDay> schoolDays) {
 		this.schoolDays = schoolDays;
-	}
-	
-	public List<Period> getPeriods() {
-		return periods;
-	}
-	
-	public void setPeriods(List<Period> periods) {
-		this.periods = periods;
 	}
 
 	@PlanningEntityCollectionProperty
@@ -123,6 +132,7 @@ public class Timetable implements Solution<HardAndSoftScore> {
 		clone.schoolHours = schoolHours;
 		clone.schoolDays = schoolDays;
 		clone.periods = periods;
+		clone.periodOffRequests = periodOffRequests;
 		List<SchoolClass> clonedSchoolClasses = new ArrayList<SchoolClass>(schoolClasses.size());
 		for (SchoolClass schoolClass : schoolClasses) {
 			clonedSchoolClasses.add(schoolClass.clone());
@@ -142,6 +152,7 @@ public class Timetable implements Solution<HardAndSoftScore> {
 		facts.addAll(gradeSubjects);
 		facts.addAll(rooms);
 		facts.addAll(periods);
+		facts.addAll(periodOffRequests);
 		
 		facts.addAll(schoolHours);
 		facts.addAll(schoolDays);
