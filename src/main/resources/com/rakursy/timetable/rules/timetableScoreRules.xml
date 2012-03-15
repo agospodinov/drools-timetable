@@ -37,7 +37,7 @@
 		</acceptor>
 		<forager>
 			<pickEarlyType>NEVER</pickEarlyType>
-			<minimalAcceptedSelection>64</minimalAcceptedSelection><!-- TODO tweak me -->
+			<minimalAcceptedSelection>128</minimalAcceptedSelection><!-- TODO tweak me -->
 		</forager>
 	</localSearch>
 <!-- 	<localSearch>

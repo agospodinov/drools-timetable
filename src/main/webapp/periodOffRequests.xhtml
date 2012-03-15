@@ -9,7 +9,7 @@
 	<ui:define name="content">
 		<p:dataTable id="periodOffRequestList" value="#{periodOffRequestAction.periodOffRequestsForTeacher}" var="por" 
 				paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false" rows="10">
-			<f:facet name="header"><h:outputText value="#{messages.periodOffRequests} #{messages.for} #{por.teacher.name}" /></f:facet>
+			<f:facet name="header"><h:outputText value="#{messages.periodOffRequests} #{messages.for} #{periodOffRequestAction.teacher.name}" /></f:facet>
 			
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
