@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<h2><h:outputText value="#{messages.subjectList}" /></h2>
+		<p:commandButton action="#{subjectAction.load}" value="#{messages.newM} #{messages.subject}" /><br />
+		<p:dataTable var="s" value="#{subjects}" emptyMessage="#{messages.noneAdded} #{messages.subjects}."
+				paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="15">
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.name}" /></f:facet>
+                <h:outputText value="#{s.name}" />
+            </p:column>
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.subjectWeight}" /></f:facet>
+                <h:outputText value="#{s.weight.toString}" />
+            </p:column>
+		</p:dataTable>
+	</ui:define>
+</ui:composition>

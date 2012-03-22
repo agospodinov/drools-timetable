@@ -1,10 +1,13 @@
 package com.rakursy.timetable.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -19,11 +22,6 @@ public class SchoolDay implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-//	@NotNull
-//	@NotEmpty
-//	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE })
-//	private List<SchoolHour> schoolHours;
-
 	@NotNull
 	private Integer minAllowedWeight;
 
@@ -32,34 +30,39 @@ public class SchoolDay implements Serializable {
 
 	@NotNull
 	private DayOfWeek dayOfWeek;
-	
+
+	@NotNull
+	@ManyToOne
+	private School school;
+
+	@Transient
+	private UUID uuid;
+
+	public SchoolDay() {
+		uuid = UUID.randomUUID();
+	}
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(id)
-				.append(minAllowedWeight)
-				.append(maxAllowedWeight)
-				.append(dayOfWeek)
+				.append(uuid)
 				.toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj instanceof SchoolDay) {
-        	SchoolDay other = (SchoolDay) obj;
-            return new EqualsBuilder()
-                    .append(id, other.id)
-                    .append(minAllowedWeight, other.minAllowedWeight)
-                    .append(maxAllowedWeight, other.maxAllowedWeight)
-                    .append(dayOfWeek, other.dayOfWeek)
-                    .isEquals();
-        } else {
-            return false;
-        }
+		if (this == obj) {
+			return true;
+		} else if (obj instanceof SchoolDay) {
+			SchoolDay other = (SchoolDay) obj;
+			return new EqualsBuilder()
+					.append(uuid, other.uuid)
+					.isEquals();
+		} else {
+			return false;
+		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return dayOfWeek.toString();
@@ -72,14 +75,6 @@ public class SchoolDay implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-//	public List<SchoolHour> getSchoolHours() {
-//		return this.schoolHours;
-//	}
-//
-//	public void setSchoolHours(List<SchoolHour> schoolHours) {
-//		this.schoolHours = schoolHours;
-//	}
 
 	public Integer getMinAllowedWeight() {
 		return this.minAllowedWeight;
@@ -103,6 +98,14 @@ public class SchoolDay implements Serializable {
 
 	public void setDayOfWeek(DayOfWeek dayOfWeek) {
 		this.dayOfWeek = dayOfWeek;
+	}
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 
 }

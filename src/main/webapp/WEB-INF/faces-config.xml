@@ -10,7 +10,10 @@
 
 	<!-- Write your navigation rules here. You are encouraged to use CDI for 
 		creating @Named managed beans. -->
-		
+	
+	
+	<name>timetable</name>
+
 	<application>
 		<locale-config>
 			<default-locale>bg</default-locale>
@@ -22,162 +25,202 @@
 	</application>
 
 	<navigation-rule>
-		<from-view-id>/grade.xhtml</from-view-id>
+		<from-view-id>/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{identity.login}</from-action>
+			<if>#{identity.loggedIn}</if>
+			<to-view-id>/private/help.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{identity.login}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<if>#{not identity.loggedIn}</if>
+			<to-view-id>/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/private/index.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{timetableController.save}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/viewOldSolutions.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/private/grade.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{gradeAction.generateMaps}</from-action>
 			<from-outcome>next</from-outcome>
-			<to-view-id>/gradeSubjects.xhtml</to-view-id>
+			<to-view-id>/private/gradeSubjects.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{gradeAction.cancel}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/grades.xhtml</to-view-id>
+			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
-		<from-view-id>/gradeSubjects.xhtml</from-view-id>
+		<from-view-id>/private/gradeSubjects.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{gradeAction.splitIntoGroups}</from-action>
 			<from-outcome>next</from-outcome>
-			<to-view-id>/gradeGroups.xhtml</to-view-id>
+			<to-view-id>/private/gradeGroups.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{gradeAction.splitIntoGroups}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/grades.xhtml</to-view-id>
+			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{gradeAction.cancel}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/grades.xhtml</to-view-id>
+			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
-	
+
+
 	<navigation-rule>
-		<from-view-id>/gradeGroups.xhtml</from-view-id>
+		<from-view-id>/private/gradeGroups.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{gradeAction.save}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/grades.xhtml</to-view-id>
+			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{gradeAction.cancel}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/grades.xhtml</to-view-id>
+			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
-		<from-view-id>/room.xhtml</from-view-id>
+		<from-view-id>/private/room.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{roomAction.save}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/rooms.xhtml</to-view-id>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{roomAction.cancel}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/rooms.xhtml</to-view-id>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
-		<from-view-id>/teacher.xhtml</from-view-id>
+		<from-view-id>/private/teacher.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{teacherAction.save}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/teachers.xhtml</to-view-id>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{teacherAction.cancel}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/teachers.xhtml</to-view-id>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
-		<from-view-id>/periodOffRequests.xhtml</from-view-id>
+		<from-view-id>/private/periodOffRequests.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{periodOffRequestAction.save}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/teachers.xhtml</to-view-id>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{periodOffRequestAction.cancel}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
-		<from-view-id>/subject.xhtml</from-view-id>
+		<from-view-id>/private/subject.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{subjectAction.save}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/subjects.xhtml</to-view-id>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{subjectAction.cancel}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/subjects.xhtml</to-view-id>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
-		<from-view-id>/teachers.xhtml</from-view-id>
+		<from-view-id>/private/teachers.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{periodOffRequestAction.load}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/periodOffRequests.xhtml</to-view-id>
+			<to-view-id>/private/periodOffRequests.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{teacherAction.load}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/teacher.xhtml</to-view-id>
+			<to-view-id>/private/teacher.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/subjects.xhtml</from-view-id>
+		<from-view-id>/private/subjects.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{subjectAction.load}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/subject.xhtml</to-view-id>
+			<to-view-id>/private/subject.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/rooms.xhtml</from-view-id>
+		<from-view-id>/private/rooms.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{roomAction.load}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/room.xhtml</to-view-id>
+			<to-view-id>/private/room.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/grades.xhtml</from-view-id>
+		<from-view-id>/private/grades.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{gradeAction.load}</from-action>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/grade.xhtml</to-view-id>
+			<to-view-id>/private/grade.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 </faces-config>

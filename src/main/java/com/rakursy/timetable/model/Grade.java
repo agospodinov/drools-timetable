@@ -1,7 +1,9 @@
 package com.rakursy.timetable.model;
 
-import static ch.lambdaj.Lambda.*;
-import static org.hamcrest.Matchers.*;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.select;
+import static org.hamcrest.Matchers.equalTo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -20,7 +23,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
-
 
 @Entity
 public class Grade implements Serializable {
@@ -36,20 +38,24 @@ public class Grade implements Serializable {
 	private String name;
 
 	@NotNull
-	@OneToMany(cascade = { CascadeType.PERSIST })
+	@OneToMany(cascade = { CascadeType.ALL })
 	private List<GradeSubject> subjects;
-	
+
 	@NotNull
-	@OneToMany(cascade = { CascadeType.PERSIST })
+	@OneToMany(cascade = { CascadeType.ALL })
 	private List<StudentGroup> studentGroups;
 
 	@NotNull
-	@Min(value=1)
+	@Min(value = 1)
 	private Integer studentCount;
 
 	@OneToOne
 	private Room classRoom;
-	
+
+	@NotNull
+	@ManyToOne
+	private School school;
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
@@ -58,23 +64,23 @@ public class Grade implements Serializable {
 				.append(studentCount)
 				.toHashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj instanceof Grade) {
-        	Grade other = (Grade) obj;
-            return new EqualsBuilder()
-                    .append(id, other.id)
-                    .append(name, other.name)
-                    .append(studentCount, other.studentCount)
-                    .isEquals();
-        } else {
-            return false;
-        }
+		if (this == obj) {
+			return true;
+		} else if (obj instanceof Grade) {
+			Grade other = (Grade) obj;
+			return new EqualsBuilder()
+					.append(id, other.id)
+					.append(name, other.name)
+					.append(studentCount, other.studentCount)
+					.isEquals();
+		} else {
+			return false;
+		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;
@@ -104,68 +110,77 @@ public class Grade implements Serializable {
 		this.subjects = subjects;
 	}
 
-	public void addSubject(Subject subject, List<Teacher> teachers, Integer classCountPerWeek) {
+	public void addSubject(Subject subject, List<Teacher> teachers,
+			Integer classCountPerWeek) {
 		if (subjects == null) {
-			subjects = new ArrayList<GradeSubject>();	
+			subjects = new ArrayList<GradeSubject>();
 		}
 
-		this.subjects.add(new GradeSubject(subject, teachers, classCountPerWeek));
+		this.subjects
+				.add(new GradeSubject(subject, teachers, classCountPerWeek));
 	}
-	
+
 	@Transient
 	public List<Subject> getSubjectList() {
 		List<Subject> results = new ArrayList<Subject>();
-		
+
 		for (GradeSubject triple : subjects) {
 			results.add(triple.getSubject());
 		}
-		
+
 		return results;
 	}
-	
+
 	@Transient
 	public List<Teacher> getTeachersForSubject(Subject subject) {
 		for (GradeSubject triple : subjects) {
-			if(triple.getSubject().equals(subject)) {
+			if (triple.getSubject().equals(subject)) {
 				return triple.getTeachers();
 			}
 		}
 		return null;
 	}
-	
+
 	@Transient
 	public Integer getClassCountForSubject(Subject subject) {
 		for (GradeSubject gradeSubject : subjects) {
 			if (gradeSubject.getSubject().equals(subject)) {
-				List<StudentGroup> groups = select(studentGroups, 
-						having(on(StudentGroup.class).getSubject(), equalTo(subject)));
+				List<StudentGroup> groups = select(
+						studentGroups,
+						having(on(StudentGroup.class).getSubject(),
+								equalTo(subject)));
 				return gradeSubject.getClassCountPerWeek() * groups.size();
 			}
 		}
 		return null;
 	}
-	
-	public Integer getClassCountForSubjectWithTeacher(Subject subject, Teacher teacher) {
+
+	public Integer getClassCountForSubjectWithTeacher(Subject subject,
+			Teacher teacher) {
 		for (GradeSubject gradeSubject : subjects) {
 			if (gradeSubject.getSubject().equals(subject)) {
-				List<StudentGroup> groups = select(studentGroups, 
-						having(on(StudentGroup.class).getSubject(), equalTo(subject))
-						.and(having(on(StudentGroup.class).getTeacher(), equalTo(teacher))));
+				List<StudentGroup> groups = select(
+						studentGroups,
+						having(on(StudentGroup.class).getSubject(),
+								equalTo(subject)).and(
+								having(on(StudentGroup.class).getTeacher(),
+										equalTo(teacher))));
 				return gradeSubject.getClassCountPerWeek() * groups.size();
 			}
 		}
 		return null;
 	}
-	
+
 	@Transient
 	public Integer getTotalClassCountPerWeek() {
 		Integer totalClassCount = 0;
 		for (GradeSubject gradeSubject : subjects) {
-			totalClassCount += getClassCountForSubject(gradeSubject.getSubject());
+			totalClassCount += getClassCountForSubject(gradeSubject
+					.getSubject());
 		}
 		return totalClassCount;
 	}
-	
+
 	public List<StudentGroup> getStudentGroups() {
 		return studentGroups;
 	}
@@ -173,15 +188,15 @@ public class Grade implements Serializable {
 	public void setStudentGroups(List<StudentGroup> studentGroups) {
 		this.studentGroups = studentGroups;
 	}
-	
+
 	public void addStudentGroup(StudentGroup studentGroup) {
 		if (studentGroups == null) {
-			studentGroups = new ArrayList<StudentGroup>();	
+			studentGroups = new ArrayList<StudentGroup>();
 		}
 
 		this.studentGroups.add(studentGroup);
 	}
-	
+
 	public Integer getStudentCount() {
 		return this.studentCount;
 	}
@@ -196,6 +211,14 @@ public class Grade implements Serializable {
 
 	public void setClassRoom(Room classRoom) {
 		this.classRoom = classRoom;
+	}
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 
 }

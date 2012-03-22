@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -15,24 +16,28 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class Room implements Serializable {
-	
+
 	private static final long serialVersionUID = -1733021797640740886L;
 
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	@NotNull
 	private Integer number;
 
 	@NotNull
 	private Integer capacity;
-	
+
 	@NotNull
 	@NotEmpty
 	@ManyToMany
 	private List<Subject> possibleSubjects;
-	
+
+	@NotNull
+	@ManyToOne
+	private School school;
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
@@ -41,23 +46,21 @@ public class Room implements Serializable {
 				.append(capacity)
 				.toHashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj instanceof Room) {
-        	Room other = (Room) obj;
-            return new EqualsBuilder()
-                    .append(id, other.id)
-                    .append(number, other.number)
-                    .append(capacity, other.capacity)
-                    .isEquals();
-        } else {
-            return false;
-        }
+		if (this == obj) {
+			return true;
+		} else if (obj instanceof Room) {
+			Room other = (Room) obj;
+			return new EqualsBuilder()
+					.append(id, other.id)
+					.append(number, other.number)
+					.append(capacity, other.capacity).isEquals();
+		} else {
+			return false;
+		}
 	}
-	
 
 	@Override
 	public String toString() {
@@ -79,7 +82,7 @@ public class Room implements Serializable {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
-	
+
 	public Integer getCapacity() {
 		return this.capacity;
 	}
@@ -94,6 +97,14 @@ public class Room implements Serializable {
 
 	public void setPossibleSubjects(List<Subject> possibleSubjects) {
 		this.possibleSubjects = possibleSubjects;
+	}
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 
 }

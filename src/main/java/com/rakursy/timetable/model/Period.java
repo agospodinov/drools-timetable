@@ -1,11 +1,13 @@
 package com.rakursy.timetable.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -28,12 +30,21 @@ public class Period implements Serializable {
 	@ManyToOne
 	private SchoolHour schoolHour;
 	
+	@NotNull
+	@ManyToOne
+	private School school;
+	
+	@Transient
+	private UUID uuid;
+	
+	public Period() {
+		uuid = UUID.randomUUID();
+	}
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(id)
-//				.append(schoolDay)
-//				.append(schoolHour)
+				.append(uuid)
 				.toHashCode();
 	}
 	
@@ -44,9 +55,7 @@ public class Period implements Serializable {
         } else if (obj instanceof Period) {
         	Period other = (Period) obj;
             return new EqualsBuilder()
-                    .append(id, other.id)
-//                    .append(schoolDay, other.schoolDay)
-//                    .append(schoolHour, other.schoolHour)
+                    .append(uuid, other.uuid)
                     .isEquals();
         } else {
             return false;
@@ -82,5 +91,13 @@ public class Period implements Serializable {
 	public void setSchoolHour(SchoolHour schoolHour) {
 		this.schoolHour = schoolHour;
 	}
-	
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
+	}
+
 }

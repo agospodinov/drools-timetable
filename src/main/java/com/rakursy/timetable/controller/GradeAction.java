@@ -65,6 +65,7 @@ public class GradeAction extends EntityManageAction<Grade> {
 			GradeSubject gradeSubject = new GradeSubject();
 			gradeSubject.setGrade(newEntity);
 			gradeSubject.setSubject(subject);
+			gradeSubject.setSchool(user.getSchool());
 			gradeSubjects.add(gradeSubject);
 		}
 		
@@ -78,6 +79,7 @@ public class GradeAction extends EntityManageAction<Grade> {
 					StudentGroup studentGroup = new StudentGroup(gradeSubject.getSubject(), teacher);
 					studentGroup.setGrade(newEntity);
 					studentGroup.setWholeGrade(false);
+					studentGroup.setSchool(user.getSchool());
 					studentGroups.add(studentGroup);
 				}
 			}
@@ -93,6 +95,7 @@ public class GradeAction extends EntityManageAction<Grade> {
 
 	@Override
 	public String save() {
+		newEntity.setSchool(user.getSchool());
 		newEntity.setSubjects(gradeSubjects);
 		
 		// Don't forget the ones that are the whole grades
@@ -102,6 +105,7 @@ public class GradeAction extends EntityManageAction<Grade> {
 				studentGroup.setGrade(newEntity);
 				studentGroup.setStudentCount(newEntity.getStudentCount());
 				studentGroup.setWholeGrade(true);
+				studentGroup.setSchool(user.getSchool());
 				studentGroups.add(studentGroup);
 			}
 		}

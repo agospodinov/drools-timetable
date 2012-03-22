@@ -17,6 +17,12 @@ public class SubjectAction extends EntityManageAction<Subject> {
 	public Subject getNewSubject() {
 		return newEntity;
 	}
+	
+	@Override
+	public String save() {
+		newEntity.setSchool(user.getSchool());
+		return super.save();
+	}
 
 	@Override
 	protected Subject find() {

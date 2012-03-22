@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:panel>
+			
+			<p:focus />
+				
+			<h:panelGrid columns="3">
+				<h:outputLabel value="#{messages.numberWord}: *" for="room_number" />
+				<p:inputText id="room_number" value="#{newRoom.number}" label="#{messages.numberWord}" required="true" />
+				<p:message for="room_number" />
+				
+				<h:outputLabel value="#{messages.roomCapacity}: *" for="room_capacity" />
+				<p:inputText id="room_capacity" value="#{newRoom.capacity}" label="#{messages.roomCapacity}" required="true" />
+				<p:message for="room_capacity" />
+				
+				<h:outputLabel value="#{messages.subjectList}: *" for="room_subjects" />
+				<p:selectManyMenu id="room_subjects" value="#{newRoom.possibleSubjects}" label="#{messages.subjectList}" style="height:100px">
+					<f:selectItems value="#{subjects}" var="s" itemLabel="#{s.name}" />
+					<s:objectConverter />
+				</p:selectManyMenu>
+				<p:message for="room_subjects" />
+			</h:panelGrid>
+			<p:commandButton value="#{messages.save}" action="#{roomAction.save}" />
+			<p:commandButton value="#{messages.cancel}" action="#{roomAction.cancel}" immediate="true" />
+		</p:panel>
+	</ui:define>
+</ui:composition>

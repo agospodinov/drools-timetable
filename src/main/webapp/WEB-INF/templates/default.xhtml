@@ -5,28 +5,38 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Solver</title>
+	<title>Timetable Demo</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<h:outputStylesheet name="css/screen.css" />
 </h:head>
 <h:body>
 	<div id="container">
 		<h:form>
-			<p:growl id="msgs" autoUpdate="true" />
+			<p:growl id="msgs" life="2000" autoUpdate="true" />
 			
 			<div id="header">
-				<div id="title"><img src="#{request.contextPath}/resources/gfx/hdr.title.png" alt="eDiary"/></div>
-				<div id="menu">
-					<p:commandLink value="#{messages.solver}" action="index.xhtml?faces-redirect=true" immediate="true" />
-					<h:outputText styleClass="divider" value=" | " /> 
-					<p:commandLink value="#{messages.subjectList}" action="subjects.xhtml?faces-redirect=true" immediate="true" />
-					<h:outputText styleClass="divider" value=" | " /> 
-					<p:commandLink value="#{messages.teacherList}" action="teachers.xhtml?faces-redirect=true" immediate="true" />
-					<h:outputText styleClass="divider" value=" | " /> 
-					<p:commandLink value="#{messages.roomList}" action="rooms.xhtml?faces-redirect=true" immediate="true" />
-					<h:outputText styleClass="divider" value=" | " />
-					<p:commandLink value="#{messages.gradeList}" action="grades.xhtml?faces-redirect=true" immediate="true" />
-				</div>
+				<div id="title"><img src="#{request.contextPath}/resources/gfx/hdr.title.png" alt="timetable"/></div>
+				<ui:fragment rendered="#{identity.loggedIn}">
+					<div id="menu">
+						<p:commandLink value="#{messages.solver}" action="/private/index.xhtml?faces-redirect=true" immediate="true" />
+						<h:outputText styleClass="divider" value=" | " /> 
+						<p:commandLink value="#{messages.subjectList}" action="/private/subjects.xhtml?faces-redirect=true" immediate="true" />
+						<h:outputText styleClass="divider" value=" | " /> 
+						<p:commandLink value="#{messages.teacherList}" action="/private/teachers.xhtml?faces-redirect=true" immediate="true" />
+						<h:outputText styleClass="divider" value=" | " /> 
+						<p:commandLink value="#{messages.roomList}" action="/private/rooms.xhtml?faces-redirect=true" immediate="true" />
+						<h:outputText styleClass="divider" value=" | " />
+						<p:commandLink value="#{messages.gradeList}" action="/private/grades.xhtml?faces-redirect=true" immediate="true" />
+						<h:outputText styleClass="divider" value=" | " />
+						<p:commandLink value="#{messages.viewOldSolutions}" action="/private/viewOldSolutions.xhtml?faces-redirect=true" immediate="true" />
+						<h:outputText styleClass="divider" value=" | " />
+						<p:commandLink value="#{messages.dataImporter}" action="/private/dataImporter.xhtml?faces-redirect=true" immediate="true" />
+						<h:outputText styleClass="divider" value=" | " />
+						<p:commandLink value="#{messages.help}" action="/private/help.xhtml?faces-redirect=true" immediate="true" />
+						<h:outputText styleClass="divider" value=" | " />
+						<p:commandLink value="#{messages.logout}" action="#{identity.logout}" immediate="true" />
+					</div>
+				</ui:fragment>
 			</div>
 			
 			<div id="content">
@@ -34,7 +44,7 @@
 			</div>
 			
 			<div id="footer">
-				<a href="http://www.seamframework.org/"><img src="#{request.contextPath}/resources/gfx/runningon_seamlogo_white.gif" alt="Created with and running on Seam" width="160" height="40"/></a>
+				<a href="http://jboss.org/as7" style="float: left;"><img src="#{request.contextPath}/resources/gfx/logo.png" alt="Built with Java EE 6" height="40" /></a>
 				
 				<h:outputText value="Proudly using " /> 
 				<a href="http://www.jboss.org/drools/drools-expert.html"><img src="#{request.contextPath}/resources/gfx/drools-expert.png" alt="Drools Expert" width="120" height="40"/></a>

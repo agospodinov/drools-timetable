@@ -17,6 +17,12 @@ public class TeacherAction extends EntityManageAction<Teacher> {
 	public Teacher getNewTeacher() {
 		return newEntity;
 	}
+	
+	@Override
+	public String save() {
+		newEntity.setSchool(user.getSchool());
+		return super.save();
+	}
 
 	@Override
 	protected Teacher find() {
