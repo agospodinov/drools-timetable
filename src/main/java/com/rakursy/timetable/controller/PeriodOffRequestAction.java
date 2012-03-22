@@ -2,7 +2,6 @@ package com.rakursy.timetable.controller;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Instance;
@@ -57,6 +56,7 @@ public class PeriodOffRequestAction extends EntityManageAction<PeriodOffRequest>
 	
 	@Override
 	public String save() {
+		newEntity.setSchool(user.getSchool());
 		newEntity.setTeacher(teacher);
 		return super.save();
 	}

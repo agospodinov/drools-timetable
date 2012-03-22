@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:panel rendered="#{empty timetables}">
+			<h:outputText value="#{messages.noTimetables}" />
+		</p:panel>
+		<p:panel rendered="#{not empty timetables}">
+			<p:selectOneMenu value="#{oldSolutionsController.oldSolution}" >
+				<f:selectItems value="#{timetables}" var="tt" itemLabel="#{messages.timetableGeneratedOn} #{tt.creationDate}" />
+				<f:converter converterId="timetableConverter" />
+			</p:selectOneMenu>
+			<br />
+			<p:commandButton update="timetable" value="#{messages.showSolution}" />
+			<br /><br />
+			
+			<p:panel id="timetable">
+				<ui:repeat value="#{oldSolutionsController.oldSolution.schoolDays}" var="schoolDay">
+					<p:dataTable value="#{oldSolutionsController.oldPeriodsForSchoolDays[schoolDay]}" var="period" sortBy="#{period.schoolHour.actualStartTime}">
+						<f:facet name="header"><h:outputText value="#{schoolDay.dayOfWeek.toString()}" /></f:facet>
+						<p:column style="width:30px" headerText="#{messages.number}">
+							<h:outputText value="#{period.schoolHour.actualStartTime}" />
+						</p:column>
+						
+						<p:columns value="#{oldSolutionsController.oldSolution.grades}" var="grade" columnIndexVar="colIndex">
+							<f:facet name="header"><h:outputText value="#{grade.name}" /></f:facet>
+							<h:outputText value="#{oldSolutionsController.getSchoolClassForTimeAndGrade(period, grade)}" />
+						</p:columns>
+					</p:dataTable>
+					
+					<br />
+				</ui:repeat>
+			</p:panel>
+		</p:panel>
+	</ui:define>
+</ui:composition>

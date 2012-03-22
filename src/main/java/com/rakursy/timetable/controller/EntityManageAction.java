@@ -1,29 +1,33 @@
 package com.rakursy.timetable.controller;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
 import org.jboss.logging.Logger;
+import org.jboss.seam.security.annotations.LoggedIn;
 import org.jboss.solder.logging.Category;
 import org.jboss.solder.servlet.http.RequestParam;
 
-import com.rakursy.timetable.util.qualifiers.Created;
-import com.rakursy.timetable.util.qualifiers.Updated;
+import com.rakursy.timetable.model.User;
 
 @Dependent
+@LoggedIn
 public abstract class EntityManageAction<T> {
 
 	@Inject
 	@Category("timetable")
 	protected Logger log;
+	
+	@Inject
+	@Named("loggedInUser")
+	protected User user;
 	
 	@PersistenceContext(type=PersistenceContextType.EXTENDED)
 	protected EntityManager em;
@@ -58,16 +62,16 @@ public abstract class EntityManageAction<T> {
 		return "success";
 	}
 
-	@SuppressWarnings("serial")
+//	@SuppressWarnings("serial")
 	public String save() {
 		log.info("Saving " + newEntity);
 		
 		if (em.contains(newEntity)) {
 			newEntity = em.merge(newEntity);
-			beanManager.fireEvent(newEntity, new AnnotationLiteral<Updated>() {});
+//			beanManager.fireEvent(newEntity, new AnnotationLiteral<Updated>() {});
 		} else {
 			em.persist(newEntity);
-			beanManager.fireEvent(newEntity, new AnnotationLiteral<Created>() {});
+//			beanManager.fireEvent(newEntity, new AnnotationLiteral<Created>() {});
 		}
 		
 		

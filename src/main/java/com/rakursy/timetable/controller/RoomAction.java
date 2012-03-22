@@ -17,6 +17,12 @@ public class RoomAction extends EntityManageAction<Room> {
 	public Room getNewRoom() {
 		return newEntity;
 	}
+	
+	@Override
+	public String save() {
+		newEntity.setSchool(user.getSchool());
+		return super.save();
+	}
 
 	@Override
 	protected Room find() {

@@ -19,21 +19,25 @@ public class PeriodOffRequest implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	@NotNull
 	@ManyToOne
 	private Teacher teacher;
-	
+
 	/*
-	 * Since Periods are generated when the solver starts planning, 
-	 * it is not possible to use a Period reference here.  
+	 * Since Periods are generated when the solver starts planning, it is not
+	 * possible to use a Period reference here.
 	 */
 	@NotNull
 	private DayOfWeek dayOfWeek;
-	
+
 	@NotNull
 	private Integer schoolHourStartTime;
-	
+
+	@NotNull
+	@ManyToOne
+	private School school;
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
@@ -42,29 +46,28 @@ public class PeriodOffRequest implements Serializable {
 				.append(schoolHourStartTime)
 				.toHashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj instanceof PeriodOffRequest) {
-        	PeriodOffRequest other = (PeriodOffRequest) obj;
-            return new EqualsBuilder()
-                    .append(id, other.id)
-                    .append(dayOfWeek, other.dayOfWeek)
-                    .append(schoolHourStartTime, other.schoolHourStartTime)
-                    .isEquals();
-        } else {
-            return false;
-        }
+		if (this == obj) {
+			return true;
+		} else if (obj instanceof PeriodOffRequest) {
+			PeriodOffRequest other = (PeriodOffRequest) obj;
+			return new EqualsBuilder()
+					.append(id, other.id)
+					.append(dayOfWeek, other.dayOfWeek)
+					.append(schoolHourStartTime, other.schoolHourStartTime)
+					.isEquals();
+		} else {
+			return false;
+		}
 	}
-	
 
 	@Override
 	public String toString() {
 		return teacher + " X " + dayOfWeek.name() + ", " + schoolHourStartTime;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -95,6 +98,14 @@ public class PeriodOffRequest implements Serializable {
 
 	public void setSchoolHourStartTime(Integer schoolHourStartTime) {
 		this.schoolHourStartTime = schoolHourStartTime;
+	}
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 
 }

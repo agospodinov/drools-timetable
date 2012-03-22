@@ -1,12 +1,14 @@
 package com.rakursy.timetable.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -32,11 +34,22 @@ public class SchoolClass implements Serializable {
 
 	@ManyToOne
 	private Room room;
+	
+	@NotNull
+	@ManyToOne
+	private School school;
+	
+	@Transient
+	private UUID uuid;
+	
+	public SchoolClass() {
+		uuid = UUID.randomUUID();
+	}
 
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(id)
+				.append(uuid)
 				.toHashCode();
 	}
 
@@ -47,7 +60,7 @@ public class SchoolClass implements Serializable {
         } else if (obj instanceof SchoolClass) {
         	SchoolClass other = (SchoolClass) obj;
             return new EqualsBuilder()
-                    .append(id, other.id)
+                    .append(uuid, other.uuid)
                     .isEquals();
         } else {
             return false;
@@ -63,9 +76,11 @@ public class SchoolClass implements Serializable {
 	public SchoolClass clone() {
 		SchoolClass clone = new SchoolClass();
 		clone.id = id;
+		clone.uuid = uuid;
 		clone.period = period;
 		clone.studentGroup = studentGroup;
 		clone.room = room;
+		clone.school = school;
 		return clone;
 	}
 
@@ -75,6 +90,10 @@ public class SchoolClass implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public UUID getUuid() {
+		return uuid;
 	}
 	
 	public StudentGroup getStudentGroup() {
@@ -103,6 +122,14 @@ public class SchoolClass implements Serializable {
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+	
+	public School getSchool() {
+		return school;
+	}
+	
+	public void setSchool(School school) {
+		this.school = school;
 	}
 	
 	@Transient

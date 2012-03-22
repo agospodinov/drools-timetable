@@ -11,7 +11,8 @@
 	</scoreDefinition>
 
 	<termination>
-		<!-- <maximumSecondsSpend>20</maximumSecondsSpend> -->
+		<!-- ONLY FOR DEMONSTRATION PURPOSES -->
+        <!-- <maximumMinutesSpend>5</maximumMinutesSpend> -->
 		<scoreAttained>-0hard/-0soft</scoreAttained>
 	</termination>
 
@@ -37,7 +38,7 @@
 		</acceptor>
 		<forager>
 			<pickEarlyType>NEVER</pickEarlyType>
-			<minimalAcceptedSelection>128</minimalAcceptedSelection><!-- TODO tweak me -->
+			<minimalAcceptedSelection>64</minimalAcceptedSelection><!-- TODO tweak me -->
 		</forager>
 	</localSearch>
 <!-- 	<localSearch>
