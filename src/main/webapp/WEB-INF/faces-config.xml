@@ -23,6 +23,10 @@
 			<var>messages</var>
 		</resource-bundle>
 	</application>
+	
+	<lifecycle>
+		<phase-listener>com.ocpsoft.pretty.faces.event.MultiPageMessagesSupport</phase-listener>
+	</lifecycle>
 
 	<navigation-rule>
 		<from-view-id>/login.xhtml</from-view-id>
@@ -61,14 +65,14 @@
 	<navigation-rule>
 		<from-view-id>/private/grade.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{gradeAction.generateMaps}</from-action>
-			<from-outcome>next</from-outcome>
+			<from-action>#{gradeHome.generateMaps}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/gradeSubjects.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{gradeAction.cancel}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{gradeHome.cancel}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -77,20 +81,20 @@
 	<navigation-rule>
 		<from-view-id>/private/gradeSubjects.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{gradeAction.splitIntoGroups}</from-action>
-			<from-outcome>next</from-outcome>
+			<from-action>#{gradeHome.splitIntoGroups}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/gradeGroups.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{gradeAction.splitIntoGroups}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{gradeHome.splitIntoGroups}</from-action>
+			<from-outcome>false</from-outcome>
 			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{gradeAction.cancel}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{gradeHome.cancel}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -100,14 +104,32 @@
 	<navigation-rule>
 		<from-view-id>/private/gradeGroups.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{gradeAction.save}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{gradeHome.persist}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{gradeAction.cancel}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{gradeHome.update}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeHome.cancel}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -116,14 +138,44 @@
 	<navigation-rule>
 		<from-view-id>/private/room.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{roomAction.save}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{roomHome.persist}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/rooms.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{roomAction.cancel}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{roomHome.update}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{roomHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{roomHome.persist}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{roomHome.update}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{roomHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{roomHome.cancel}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/rooms.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -132,14 +184,44 @@
 	<navigation-rule>
 		<from-view-id>/private/teacher.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{teacherAction.save}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{teacherHome.persist}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/teachers.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{teacherAction.cancel}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{teacherHome.update}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherHome.persist}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherHome.update}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherHome.cancel}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/teachers.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -148,14 +230,32 @@
 	<navigation-rule>
 		<from-view-id>/private/periodOffRequests.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{periodOffRequestAction.save}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{periodOffRequestHome.persist}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/teachers.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{periodOffRequestAction.cancel}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{periodOffRequestHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{periodOffRequestHome.persist}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{periodOffRequestHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{periodOffRequestHome.cancel}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/teachers.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -164,14 +264,44 @@
 	<navigation-rule>
 		<from-view-id>/private/subject.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{subjectAction.save}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{subjectHome.persist}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/subjects.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{subjectAction.cancel}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{subjectHome.update}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{subjectHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{subjectHome.persist}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{subjectHome.update}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{subjectHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{subjectHome.cancel}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/subjects.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -180,15 +310,27 @@
 	<navigation-rule>
 		<from-view-id>/private/teachers.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{periodOffRequestAction.load}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{periodOffRequestHome.load}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/periodOffRequests.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{teacherAction.load}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{teacherHome.load}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/teacher.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{teacherHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/teachers.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
@@ -196,9 +338,21 @@
 	<navigation-rule>
 		<from-view-id>/private/subjects.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{subjectAction.load}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{subjectHome.load}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/subject.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{subjectHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{subjectHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/subjects.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
@@ -206,9 +360,21 @@
 	<navigation-rule>
 		<from-view-id>/private/rooms.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{roomAction.load}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{roomHome.load}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/room.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{roomHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{roomHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/rooms.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
@@ -216,9 +382,21 @@
 	<navigation-rule>
 		<from-view-id>/private/grades.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{gradeAction.load}</from-action>
-			<from-outcome>success</from-outcome>
+			<from-action>#{gradeHome.load}</from-action>
+			<from-outcome>true</from-outcome>
 			<to-view-id>/private/grade.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeHome.remove}</from-action>
+			<from-outcome>true</from-outcome>
+			<to-view-id>/private/grades.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{gradeHome.remove}</from-action>
+			<from-outcome>false</from-outcome>
+			<to-view-id>/private/grades.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

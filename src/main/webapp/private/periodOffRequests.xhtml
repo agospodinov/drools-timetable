@@ -8,9 +8,9 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<p>От тук се дефинират персонални изисквания за даден учител или по-точно кои часове в кои дни този учител НЕ желае да има.</p>
-		<p:dataTable id="periodOffRequestList" value="#{periodOffRequestAction.periodOffRequestsForTeacher}" var="por" 
+		<p:dataTable id="periodOffRequestList" value="#{periodOffRequestHome.periodOffRequestsForTeacher}" var="por" 
 				paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false" rows="10">
-			<f:facet name="header"><h:outputText value="#{messages.periodOffRequests} #{messages.for} #{periodOffRequestAction.teacher.name}" /></f:facet>
+			<f:facet name="header"><h:outputText value="#{messages.periodOffRequests} #{messages.for} #{periodOffRequestHome.teacher.name}" /></f:facet>
 			
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
@@ -19,13 +19,21 @@
 			
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.dayOfWeek}" /></f:facet>
-				<h:outputText value="#{por.dayOfWeek.toString()}" />
+				<h:outputText value="#{por.dayOfWeek.toString}" />
 			</p:column>
 			
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.schoolHour}" /></f:facet>
 				<h:outputText value="#{por.schoolHourStartTime}" />
 			</p:column>
+			<p:column>
+            	<f:facet name="header"><h:outputText value="#{messages.actions}" /></f:facet>
+            	<p:commandLink action="#{periodOffRequestHome.remove}">
+            		<p:graphicImage id="removeLinkImage" value="/resources/gfx/icons/delete.png" alt="#{messages.remove}" />
+            		<p:tooltip for="removeLinkImage" value="#{messages.remove}" />
+            		<f:setPropertyActionListener target="#{periodOffRequestHome.id}" value="#{por.id}" />
+            	</p:commandLink>
+            </p:column>
 		</p:dataTable>
 		
 		<br />
@@ -40,20 +48,23 @@
 				<h:outputText />
 					
 				<h:outputLabel value="#{messages.dayOfWeek}: *" for="periodOffRequest_dayOfWeek" />
-				<p:selectOneMenu id="periodOffRequest_dayOfWeek" value="#{newPeriodOffRequest.dayOfWeek}" label="#{messages.dayOfWeek}" required="true" layout="pageDirection">
+				<p:selectOneMenu id="periodOffRequest_dayOfWeek" value="#{periodOffRequest.dayOfWeek}" label="#{messages.dayOfWeek}" required="true" layout="pageDirection">
 					<f:selectItems value="#{daysOfWeek}" var="d" itemLabel="#{d.toString()}" />
 				</p:selectOneMenu>
 				<p:message for="periodOffRequest_dayOfWeek" />
 				
 				<h:outputLabel value="#{messages.schoolHour}: *" for="periodOffRequest_schoolHour" />
-				<p:selectOneMenu id="periodOffRequest_schoolHour" value="#{newPeriodOffRequest.schoolHourStartTime}" label="#{messages.schoolHour}" required="true" >
+				<p:selectOneMenu id="periodOffRequest_schoolHour" value="#{periodOffRequest.schoolHourStartTime}" label="#{messages.schoolHour}" required="true" >
 					<f:selectItems value="#{schoolHourStartTimes}" />
 				</p:selectOneMenu>
 				<p:message for="periodOffRequest_schoolHour" />
 			</h:panelGrid>
 			
-			<p:commandButton value="#{messages.save}" action="#{periodOffRequestAction.save}" update="periodOffRequestList" />
-			<p:commandButton value="#{messages.cancel}" action="#{periodOffRequestAction.cancel}" immediate="true" />
+			
+			<p:commandButton value="#{messages.save}" action="#{periodOffRequestHome.persist}" rendered="#{not periodOffRequestHome.managed}" />
+			<p:commandButton value="#{messages.save}" action="#{periodOffRequestHome.update}" rendered="#{periodOffRequestHome.managed}" />
+			<p:commandButton value="#{messages.remove}" action="#{periodOffRequestHome.remove}" rendered="#{periodOffRequestHome.managed}" />
+			<p:commandButton value="#{messages.cancel}" action="#{periodOffRequestHome.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>
 </ui:composition>
