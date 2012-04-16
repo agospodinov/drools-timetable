@@ -1,4 +1,4 @@
-package com.rakursy.timetable.controller;
+package com.rakursy.timetable.home;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateful;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.rakursy.timetable.model.Grade;
@@ -13,16 +14,23 @@ import com.rakursy.timetable.model.GradeSubject;
 import com.rakursy.timetable.model.StudentGroup;
 import com.rakursy.timetable.model.Subject;
 import com.rakursy.timetable.model.Teacher;
+import com.rakursy.timetable.model.User;
 
 @Stateful
 @ConversationScoped
 @Named
-public class GradeAction extends EntityManageAction<Grade> {
-	
+public class GradeHome extends ConversationalEntityHome<Grade> {
+
+	private static final long serialVersionUID = 8253694804456554182L;
+
+	@Inject
+	@Named("loggedInUser")
+	private User user;
+
 	private List<Subject> subjects = new ArrayList<Subject>();
 	private List<GradeSubject> gradeSubjects = new ArrayList<GradeSubject>();
 	private List<StudentGroup> studentGroups = new ArrayList<StudentGroup>();
-	
+
 	public List<Subject> getSubjects() {
 		return subjects;
 	}
@@ -38,7 +46,7 @@ public class GradeAction extends EntityManageAction<Grade> {
 	public void setGradeSubjects(List<GradeSubject> gradeSubjects) {
 		this.gradeSubjects = gradeSubjects;
 	}
-	
+
 	public List<StudentGroup> getStudentGroups() {
 		return studentGroups;
 	}
@@ -49,80 +57,73 @@ public class GradeAction extends EntityManageAction<Grade> {
 
 	@SuppressWarnings("unchecked")
 	public List<Teacher> getTeachersForSubject(Subject subject) {
-		return em.createQuery("select t from Teacher t where :subject member of t.subjects")
+		return getEntityManager()
+				.createQuery("select t from Teacher t where :subject member of t.subjects")
 				.setParameter("subject", subject)
 				.getResultList();
 	}
 
+	@Override
 	@Produces
-	@Named
-	public Grade getNewGrade() {
-		return newEntity;
+	@Named("grade")
+	public Grade getInstance() {
+		return super.getInstance();
 	}
-	
-	public String generateMaps() {
+
+	public boolean generateMaps() {
 		for (Subject subject : subjects) {
 			GradeSubject gradeSubject = new GradeSubject();
-			gradeSubject.setGrade(newEntity);
+			gradeSubject.setGrade(getInstance());
 			gradeSubject.setSubject(subject);
 			gradeSubject.setSchool(user.getSchool());
 			gradeSubjects.add(gradeSubject);
 		}
-		
-		return "next";
+
+		return true;
 	}
-	
-	public String splitIntoGroups() {
+
+	public boolean splitIntoGroups() {
 		for (GradeSubject gradeSubject : gradeSubjects) {
 			if (gradeSubject.getTeachers().size() > 1) {
 				for (Teacher teacher : gradeSubject.getTeachers()) {
 					StudentGroup studentGroup = new StudentGroup(gradeSubject.getSubject(), teacher);
-					studentGroup.setGrade(newEntity);
+					studentGroup.setGrade(getInstance());
 					studentGroup.setWholeGrade(false);
 					studentGroup.setSchool(user.getSchool());
 					studentGroups.add(studentGroup);
 				}
 			}
 		}
-		
-		if (studentGroups.size() == 0) {			
+
+		if (studentGroups.size() == 0) {
 			// There's nothing extra to do...
-			return save();
+			persist();
+			return false;
 		}
-		
-		return "next";
+
+		return true;
 	}
 
 	@Override
-	public String save() {
-		newEntity.setSchool(user.getSchool());
-		newEntity.setSubjects(gradeSubjects);
-		
+	public boolean persist() {
+		getInstance().setSchool(user.getSchool());
+		getInstance().setSubjects(gradeSubjects);
+
 		// Don't forget the ones that are the whole grades
 		for (GradeSubject gradeSubject : gradeSubjects) {
 			if (gradeSubject.getTeachers().size() == 1) {
 				StudentGroup studentGroup = new StudentGroup(gradeSubject.getSubject(), gradeSubject.getTeachers().get(0));
-				studentGroup.setGrade(newEntity);
-				studentGroup.setStudentCount(newEntity.getStudentCount());
+				studentGroup.setGrade(getInstance());
+				studentGroup.setStudentCount(getInstance().getStudentCount());
 				studentGroup.setWholeGrade(true);
 				studentGroup.setSchool(user.getSchool());
 				studentGroups.add(studentGroup);
 			}
 		}
-		
-		newEntity.setStudentGroups(studentGroups);
-		
-		return super.save();
-	}
 
-	@Override
-	protected Grade find() {
-		return em.find(Grade.class, Long.parseLong(idProvider.get()));
-	}
+		getInstance().setStudentGroups(studentGroups);
 
-	@Override
-	protected Grade create() {
-		return new Grade();
+		return super.persist();
 	}
 
 }
