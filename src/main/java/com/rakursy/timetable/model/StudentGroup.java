@@ -40,6 +40,10 @@ public class StudentGroup implements Serializable {
 	@NotNull
 	private Boolean wholeGrade;
 	
+	@NotNull
+	@ManyToOne
+	private School school;
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
@@ -124,6 +128,14 @@ public class StudentGroup implements Serializable {
 
 	public void setWholeGrade(Boolean wholeGrade) {
 		this.wholeGrade = wholeGrade;
+	}
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 	
 }

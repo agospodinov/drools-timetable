@@ -11,8 +11,9 @@
 	</scoreDefinition>
 
 	<termination>
-		<!-- <maximumSecondsSpend>20</maximumSecondsSpend> -->
-		<scoreAttained>-0hard/-999999soft</scoreAttained>
+		<!-- ONLY FOR DEMONSTRATION PURPOSES -->
+        <!-- <maximumMinutesSpend>5</maximumMinutesSpend> -->
+		<scoreAttained>-0hard/-0soft</scoreAttained>
 	</termination>
 
 	<constructionHeuristic>
@@ -32,7 +33,7 @@
 		</selector>
  		<acceptor>
  			<solutionTabuSize>1000</solutionTabuSize>
-			<propertyTabuSize>100</propertyTabuSize>
+			<propertyTabuSize>10</propertyTabuSize>
 			<simulatedAnnealingStartingTemperature>4hard/100soft</simulatedAnnealingStartingTemperature>
 		</acceptor>
 		<forager>

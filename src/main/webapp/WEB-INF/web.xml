@@ -33,6 +33,11 @@
 		<location>/404.xhtml</location>
 	</error-page>
 	
+	<error-page>
+	    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+    	<location>/sessionExpired.xhtml</location>
+	</error-page>
+	
 	<servlet>                                                                                                                                                                                 
 		<servlet-name>Faces Servlet</servlet-name>                                                                                                                                        
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>                                                                                                                    

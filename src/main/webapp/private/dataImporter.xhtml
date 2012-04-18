@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:outputPanel rendered="#{not solverPoolManager.isSchoolLocked(loggedInUser.school)}">
+			<p:panel id="actions">
+				<p:commandButton id="removeAllTimetables" value="#{messages.removeAllTimetables}" action="#{dataImporter.removeAllTimetables}" />
+				<p:commandButton id="removeAllData" value="#{messages.removeAll}" action="#{dataImporter.removeAllData}" />
+			</p:panel>
+			<p:blockUI block="actions" trigger="removeAllTimetables,removeAllData">
+				<h:outputText value="#{messages.pleaseWait}" /><br />
+				<p:graphicImage value="/resources/gfx/ajax-loader.gif" />  
+			</p:blockUI>
+		</p:outputPanel>
+		<p:outputPanel rendered="#{solverPoolManager.isSchoolLocked(loggedInUser.school)}">
+			<h:outputText value="#{messages.cannotModify}" />
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>

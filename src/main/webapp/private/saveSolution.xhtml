@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:panel>
+			<p:focus />
+			
+			<h:panelGrid columns="3">
+				<h:outputLabel value="#{messages.timetableDescription}" for="timetable_description" />
+				<p:inputText id="timetable_description" value="#{timetableController.solution.description}" />
+				<p:message for="timetable_description" />
+			</h:panelGrid>
+			
+			<p:commandButton value="#{messages.save}" action="#{timetableController.save}" />
+			<p:commandButton value="#{messages.cancel}" action="#{timetableController.cancel}" immediate="true" />
+		</p:panel>
+	</ui:define>
+</ui:composition>

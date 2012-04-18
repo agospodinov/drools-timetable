@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p>От тук се дефинират персонални изисквания за даден учител или по-точно кои часове в кои дни този учител НЕ желае да има.</p>
+		<p:dataTable id="periodOffRequestList" value="#{periodOffRequestAction.periodOffRequestsForTeacher}" var="por" 
+				paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false" rows="10">
+			<f:facet name="header"><h:outputText value="#{messages.periodOffRequests} #{messages.for} #{periodOffRequestAction.teacher.name}" /></f:facet>
+			
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
+				<h:outputText value="#{por.teacher.name}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.dayOfWeek}" /></f:facet>
+				<h:outputText value="#{por.dayOfWeek.toString()}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header"><h:outputText value="#{messages.schoolHour}" /></f:facet>
+				<h:outputText value="#{por.schoolHourStartTime}" />
+			</p:column>
+		</p:dataTable>
+		
+		<br />
+		
+		<p:panel>
+		
+			<p:focus />
+			
+			<h:panelGrid columns="3">
+				<h:outputLabel value="#{messages.oneTeacher}:" />
+				<h:outputText value="#{periodOffRequestAction.teacher}" />
+				<h:outputText />
+					
+				<h:outputLabel value="#{messages.dayOfWeek}: *" for="periodOffRequest_dayOfWeek" />
+				<p:selectOneMenu id="periodOffRequest_dayOfWeek" value="#{newPeriodOffRequest.dayOfWeek}" label="#{messages.dayOfWeek}" required="true" layout="pageDirection">
+					<f:selectItems value="#{daysOfWeek}" var="d" itemLabel="#{d.toString()}" />
+				</p:selectOneMenu>
+				<p:message for="periodOffRequest_dayOfWeek" />
+				
+				<h:outputLabel value="#{messages.schoolHour}: *" for="periodOffRequest_schoolHour" />
+				<p:selectOneMenu id="periodOffRequest_schoolHour" value="#{newPeriodOffRequest.schoolHourStartTime}" label="#{messages.schoolHour}" required="true" >
+					<f:selectItems value="#{schoolHourStartTimes}" />
+				</p:selectOneMenu>
+				<p:message for="periodOffRequest_schoolHour" />
+			</h:panelGrid>
+			
+			<p:commandButton value="#{messages.save}" action="#{periodOffRequestAction.save}" update="periodOffRequestList" />
+			<p:commandButton value="#{messages.cancel}" action="#{periodOffRequestAction.cancel}" immediate="true" />
+		</p:panel>
+	</ui:define>
+</ui:composition>

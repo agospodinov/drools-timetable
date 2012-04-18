@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -27,39 +28,35 @@ public class Teacher implements Serializable {
 	@NotBlank
 	private String name;
 
-//	@NotNull
-//	@NotEmpty
-//	@ManyToMany
-//	private List<Grade> grades;
-
 	@NotNull
 	@NotEmpty
 	@ManyToMany
 	private List<Subject> subjects;
 
+	@NotNull
+	@ManyToOne
+	private School school;
+
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(id)
-				.append(name)
-				.toHashCode();
+		return new HashCodeBuilder().append(id).append(name).toHashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj instanceof Teacher) {
-        	Teacher other = (Teacher) obj;
-            return new EqualsBuilder()
-                    .append(id, other.id)
-                    .append(name, other.name)
-                    .isEquals();
-        } else {
-            return false;
-        }
+		if (this == obj) {
+			return true;
+		} else if (obj instanceof Teacher) {
+			Teacher other = (Teacher) obj;
+			return new EqualsBuilder()
+					.append(id, other.id)
+					.append(name, other.name)
+					.isEquals();
+		} else {
+			return false;
+		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;
@@ -81,20 +78,20 @@ public class Teacher implements Serializable {
 		this.name = name;
 	}
 
-//	public List<Grade> getGrades() {
-//		return this.grades;
-//	}
-//
-//	public void setGrades(List<Grade> grades) {
-//		this.grades = grades;
-//	}
-
 	public List<Subject> getSubjects() {
 		return this.subjects;
 	}
 
 	public void setSubjects(List<Subject> subjects) {
 		this.subjects = subjects;
+	}
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 
 }

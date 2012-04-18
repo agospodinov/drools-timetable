@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+
+		<p:panel rendered="#{not identity.loggedIn}">
+
+			<p:focus />
+
+			<h:panelGrid columns="3">
+
+				<h:outputLabel for="username" value="#{messages.username}: "
+					styleClass="loginLabel" />
+				<p:inputText id="username" value="#{credentials.username}" />
+				<p:message for="username" />
+
+				<h:outputLabel for="password" value="#{messages.password}: "
+					styleClass="loginLabel" />
+				<p:password id="password" value="#{credentials.password}" />
+				<p:message for="password" />
+
+			</h:panelGrid>
+			<p:commandButton id="login" value="Login" action="#{identity.login}"
+				styleClass="loginButton" />
+		</p:panel>
+		
+		<p:panel rendered="#{identity.loggedIn}">
+			<h3>You are already logged in.</h3>
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

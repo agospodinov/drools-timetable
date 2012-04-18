@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:panel id="actions">
+			<p:commandButton id="start" value="#{messages.solve}" onclick="poll.start();saveButton.disable();" action="#{timetableController.solve}" /> &#160;
+			<p:commandButton id="stop" value="#{messages.terminate}" onclick="poll.stop();saveButton.enable();" action="#{timetableController.terminateEarly}" /> &#160;
+			<p:commandButton id="save" value="#{messages.save}" action="#{timetableController.save}" disabled="#{timetableController.solving}" widgetVar="saveButton" />
+		</p:panel>
+		<p:blockUI block="actions" trigger="start,stop,save">
+			<h:outputText value="#{messages.pleaseWait}" /><br />
+			<p:graphicImage value="/resources/gfx/ajax-loader.gif" />  
+		</p:blockUI>
+
+		<br /><br />
+		
+		<p:outputPanel id="timetable">
+			<h:outputText value="#{timetableController.score}" rendered="#{viewScope.shouldRender or timetableController.solving or timetableController.solution ne null}" />
+			
+			<p:panel rendered="#{viewScope.shouldRender or timetableController.solving or timetableController.solution ne null}">
+				<ui:repeat value="#{timetableController.solution.schoolDays}" var="schoolDay">
+					<p:dataTable value="#{timetableController.periodsForSchoolDays[schoolDay]}" var="period" sortBy="#{period.schoolHour.actualStartTime}">
+						<f:facet name="header"><h:outputText value="#{schoolDay.dayOfWeek.toString()}" /></f:facet>
+						<p:column style="width:30px" headerText="#{messages.number}">
+							<h:outputText value="#{period.schoolHour.actualStartTime}" />
+						</p:column>
+						
+						<p:columns value="#{timetableController.solution.grades}" var="grade" columnIndexVar="colIndex">
+							<f:facet name="header"><h:outputText value="#{grade.name}" /></f:facet>
+							<h:outputText value="#{timetableController.getSchoolClassForTimeAndGrade(period, grade)}" />
+						</p:columns>
+					</p:dataTable>
+					
+					<br />
+				</ui:repeat>
+			</p:panel>
+		</p:outputPanel>
+		
+		<p:remoteCommand name="renderTimetable" update="timetable">
+			<f:setPropertyActionListener target="#{viewScope.shouldRender}" value="#{true}" />
+		</p:remoteCommand>
+		
+		<p:poll interval="1" oncomplete="renderTimetable()" autoStart="#{timetableController.solving}" widgetVar="poll" stop="#{not timetableController.solving}" /> 
+	</ui:define>
+</ui:composition>

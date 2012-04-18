@@ -9,7 +9,7 @@ body {
     background-color: #EAECEE;
     font-family: Verdana, sans-serif;
     font-size: 0.9em;
-	width: 867px;;
+	width: 1200px;
 }
 
 img {
@@ -24,13 +24,13 @@ fieldset {
     margin: 0 auto;
     padding: 1px;
     border: 1px solid #C3BBB6;
-    width: 865px; /* subtract 40px from banner width for padding */
+    width: 1198px; /* subtract 40px from banner width for padding */
     background-color: #FFFFFF;
 }
 
 #header {
 	float: left;
-	width: 865px;
+	width: 1198px;
 	height: 55px;
 	background: url(#{request.contextPath}/resources/gfx/hdr.bg.gif) 0 0 repeat-x;
 }
@@ -90,4 +90,22 @@ code {
 span.invalid {
     padding-left: 3px;
     color: red;
+}
+
+.alert {
+  padding: 8px 35px 8px 14px;
+  margin-bottom: 18px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #fcf8e3;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #c09853;
+}
+
+.alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #3a87ad;
 }

@@ -1,10 +1,13 @@
 package com.rakursy.timetable.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -21,13 +24,22 @@ public class SchoolHour implements Comparable<SchoolHour>, Serializable {
 
 	@NotNull
 	private Integer actualStartTime;
+	
+	@NotNull
+	@ManyToOne
+	private School school;
+	
+	@Transient
+	private UUID uuid;
 
+	public SchoolHour() {
+		uuid = UUID.randomUUID();
+	}
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(id)
-				.append(actualStartTime)
-//				.append(schoolDay)
+				.append(uuid)
 				.toHashCode();
 	}
 	
@@ -38,8 +50,7 @@ public class SchoolHour implements Comparable<SchoolHour>, Serializable {
         } else if (obj instanceof SchoolHour) {
         	SchoolHour other = (SchoolHour) obj;
             return new EqualsBuilder()
-                    .append(id, other.id)
-                    .append(actualStartTime, other.actualStartTime)
+                    .append(uuid, other.uuid)
                     .isEquals();
         } else {
             return false;
@@ -70,6 +81,14 @@ public class SchoolHour implements Comparable<SchoolHour>, Serializable {
 
 	public void setActualStartTime(Integer actualStartTime) {
 		this.actualStartTime = actualStartTime;
+	}
+	
+	public School getSchool() {
+		return school;
+	}
+	
+	public void setSchool(School school) {
+		this.school = school;
 	}
 
 }
