@@ -1,9 +1,8 @@
 package com.rakursy.timetable.model;
 
-import static ch.lambdaj.Lambda.having;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.select;
-import static org.hamcrest.Matchers.equalTo;
+import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.collection.LambdaCollections.*;
+import static org.hamcrest.Matchers.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -110,32 +109,25 @@ public class Grade implements Serializable {
 		this.subjects = subjects;
 	}
 
-	public void addSubject(Subject subject, List<Teacher> teachers,
-			Integer classCountPerWeek) {
+	public void addSubject(Subject subject, List<Teacher> teachers, Integer classCountPerWeek) {
 		if (subjects == null) {
 			subjects = new ArrayList<GradeSubject>();
 		}
 
-		this.subjects
-				.add(new GradeSubject(subject, teachers, classCountPerWeek));
+		this.subjects.add(new GradeSubject(subject, teachers, classCountPerWeek));
 	}
 
 	@Transient
 	public List<Subject> getSubjectList() {
-		List<Subject> results = new ArrayList<Subject>();
-
-		for (GradeSubject triple : subjects) {
-			results.add(triple.getSubject());
-		}
-
-		return results;
+		return with(subjects).extract(on(GradeSubject.class).getSubject());
 	}
 
 	@Transient
 	public List<Teacher> getTeachersForSubject(Subject subject) {
-		for (GradeSubject triple : subjects) {
-			if (triple.getSubject().equals(subject)) {
-				return triple.getTeachers();
+//		return with(subjects).retain(having(on(GradeSubject.class).getSubject(), equalTo(subject))).extract(forEach(on(GradeSubject.class).getTeachers()));
+		for (GradeSubject gradeSubject : subjects) {
+			if (gradeSubject.getSubject().equals(subject)) {
+				return gradeSubject.getTeachers();
 			}
 		}
 		return null;
@@ -145,10 +137,7 @@ public class Grade implements Serializable {
 	public Integer getClassCountForSubject(Subject subject) {
 		for (GradeSubject gradeSubject : subjects) {
 			if (gradeSubject.getSubject().equals(subject)) {
-				List<StudentGroup> groups = select(
-						studentGroups,
-						having(on(StudentGroup.class).getSubject(),
-								equalTo(subject)));
+				List<StudentGroup> groups = select(studentGroups, having(on(StudentGroup.class).getSubject(), equalTo(subject)));
 				return gradeSubject.getClassCountPerWeek() * groups.size();
 			}
 		}
@@ -159,12 +148,9 @@ public class Grade implements Serializable {
 			Teacher teacher) {
 		for (GradeSubject gradeSubject : subjects) {
 			if (gradeSubject.getSubject().equals(subject)) {
-				List<StudentGroup> groups = select(
-						studentGroups,
-						having(on(StudentGroup.class).getSubject(),
-								equalTo(subject)).and(
-								having(on(StudentGroup.class).getTeacher(),
-										equalTo(teacher))));
+				List<StudentGroup> groups = select(studentGroups, 
+						having(on(StudentGroup.class).getSubject(), equalTo(subject))
+						.and(having(on(StudentGroup.class).getTeacher(), equalTo(teacher))));
 				return gradeSubject.getClassCountPerWeek() * groups.size();
 			}
 		}
@@ -175,8 +161,7 @@ public class Grade implements Serializable {
 	public Integer getTotalClassCountPerWeek() {
 		Integer totalClassCount = 0;
 		for (GradeSubject gradeSubject : subjects) {
-			totalClassCount += getClassCountForSubject(gradeSubject
-					.getSubject());
+			totalClassCount += getClassCountForSubject(gradeSubject.getSubject());
 		}
 		return totalClassCount;
 	}

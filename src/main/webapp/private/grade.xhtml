@@ -13,15 +13,15 @@
 				
 			<h:panelGrid columns="3">
 				<h:outputLabel value="#{messages.gradeName}: *" for="grade_name" />
-				<p:inputText id="grade_name" value="#{grade.name}" label="#{messages.gradeName}" required="true" />
+				<p:inputText id="grade_name" value="#{gradeHome.instance.name}" label="#{messages.gradeName}" required="true" />
 				<p:message for="grade_name" />
 				
 				<h:outputLabel value="#{messages.studentCount}: *" for="grade_studentCount" />
-				<p:inputText id="grade_studentCount" value="#{grade.studentCount}" label="#{messages.studentCount}" required="true" />
+				<p:inputText id="grade_studentCount" value="#{gradeHome.instance.studentCount}" label="#{messages.studentCount}" required="true" />
 				<p:message for="grade_studentCount" />
 				
 				<h:outputLabel value="#{messages.classRoom}: *" for="grade_classRoom" />
-				<p:selectOneMenu id="grade_classRoom" value="#{grade.classRoom}" label="#{messages.classRoom}" required="true">
+				<p:selectOneMenu id="grade_classRoom" value="#{gradeHome.instance.classRoom}" label="#{messages.classRoom}" required="true">
 					<f:selectItems value="#{rooms}" var="r" itemLabel="#{r.number.toString}" />
 					<s:objectConverter />
 				</p:selectOneMenu>
