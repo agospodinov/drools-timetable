@@ -13,6 +13,7 @@ import com.rakursy.timetable.model.Room;
 import com.rakursy.timetable.model.School;
 import com.rakursy.timetable.model.Subject;
 import com.rakursy.timetable.model.Teacher;
+import com.rakursy.timetable.model.Timetable;
 import com.rakursy.timetable.model.User;
 
 @Stateful
@@ -52,6 +53,11 @@ public class SubjectHome extends ConversationalEntityHome<Subject> {
 		}
 		for (Grade grade : school.getGrades()) {
 			if (exists(grade.getSubjectList(), having(on(Subject.class), equalTo(getInstance())))) {
+				return false;
+			}
+		}
+		for (Timetable timetable : school.getTimetables()) {
+			if (exists(timetable.getSubjects(), having(on(Subject.class), equalTo(getInstance())))) {
 				return false;
 			}
 		}
