@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.ConversationScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -45,8 +44,6 @@ public class PeriodOffRequestHome extends ConversationalEntityHome<PeriodOffRequ
 	}
 	
 	@Override
-	@Produces
-	@Named("periodOffRequest")
 	public PeriodOffRequest getInstance() {
 		return super.getInstance();
 	}

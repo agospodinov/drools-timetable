@@ -13,15 +13,15 @@
 				
 			<h:panelGrid columns="3">
 				<h:outputLabel value="#{messages.numberWord}: *" for="room_number" />
-				<p:inputText id="room_number" value="#{room.number}" label="#{messages.numberWord}" required="true" />
+				<p:inputText id="room_number" value="#{roomHome.instance.number}" label="#{messages.numberWord}" required="true" />
 				<p:message for="room_number" />
 				
 				<h:outputLabel value="#{messages.roomCapacity}: *" for="room_capacity" />
-				<p:inputText id="room_capacity" value="#{room.capacity}" label="#{messages.roomCapacity}" required="true" />
+				<p:inputText id="room_capacity" value="#{roomHome.instance.capacity}" label="#{messages.roomCapacity}" required="true" />
 				<p:message for="room_capacity" />
 				
 				<h:outputLabel value="#{messages.subjectList}: *" for="room_subjects" />
-				<p:selectManyMenu id="room_subjects" value="#{room.possibleSubjects}" label="#{messages.subjectList}" style="height:100px">
+				<p:selectManyMenu id="room_subjects" value="#{roomHome.instance.possibleSubjects}" label="#{messages.subjectList}" style="height:100px">
 					<f:attribute name="collectionType" value="java.util.ArrayList" />
 					<f:selectItems value="#{subjects}" var="s" itemLabel="#{s.name}" />
 					<s:objectConverter />
@@ -31,7 +31,7 @@
 
 			<p:commandButton value="#{messages.save}" action="#{roomHome.persist}" rendered="#{not roomHome.managed}" />
 			<p:commandButton value="#{messages.save}" action="#{roomHome.update}" rendered="#{roomHome.managed}" />
-			<p:commandButton value="#{messages.remove}" action="#{roomHome.remove}" rendered="#{roomHome.managed}" />
+			<p:commandButton value="#{messages.remove}" action="#{roomHome.remove}" rendered="#{roomHome.managed}" immediate="true" />
 			<p:commandButton value="#{messages.cancel}" action="#{roomHome.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>

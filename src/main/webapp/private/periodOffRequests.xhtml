@@ -44,17 +44,17 @@
 			
 			<h:panelGrid columns="3">
 				<h:outputLabel value="#{messages.oneTeacher}:" />
-				<h:outputText value="#{periodOffRequestAction.teacher}" />
+				<h:outputText value="#{periodOffRequestHome.teacher}" />
 				<h:outputText />
 					
 				<h:outputLabel value="#{messages.dayOfWeek}: *" for="periodOffRequest_dayOfWeek" />
-				<p:selectOneMenu id="periodOffRequest_dayOfWeek" value="#{periodOffRequest.dayOfWeek}" label="#{messages.dayOfWeek}" required="true" layout="pageDirection">
-					<f:selectItems value="#{daysOfWeek}" var="d" itemLabel="#{d.toString()}" />
+				<p:selectOneMenu id="periodOffRequest_dayOfWeek" value="#{periodOffRequestHome.instance.dayOfWeek}" label="#{messages.dayOfWeek}" required="true" layout="pageDirection">
+					<f:selectItems value="#{daysOfWeek}" var="d" itemLabel="#{d.toString}" />
 				</p:selectOneMenu>
 				<p:message for="periodOffRequest_dayOfWeek" />
 				
 				<h:outputLabel value="#{messages.schoolHour}: *" for="periodOffRequest_schoolHour" />
-				<p:selectOneMenu id="periodOffRequest_schoolHour" value="#{periodOffRequest.schoolHourStartTime}" label="#{messages.schoolHour}" required="true" >
+				<p:selectOneMenu id="periodOffRequest_schoolHour" value="#{periodOffRequestHome.instance.schoolHourStartTime}" label="#{messages.schoolHour}" required="true" >
 					<f:selectItems value="#{schoolHourStartTimes}" />
 				</p:selectOneMenu>
 				<p:message for="periodOffRequest_schoolHour" />
@@ -63,7 +63,7 @@
 			
 			<p:commandButton value="#{messages.save}" action="#{periodOffRequestHome.persist}" rendered="#{not periodOffRequestHome.managed}" />
 			<p:commandButton value="#{messages.save}" action="#{periodOffRequestHome.update}" rendered="#{periodOffRequestHome.managed}" />
-			<p:commandButton value="#{messages.remove}" action="#{periodOffRequestHome.remove}" rendered="#{periodOffRequestHome.managed}" />
+			<p:commandButton value="#{messages.remove}" action="#{periodOffRequestHome.remove}" rendered="#{periodOffRequestHome.managed}" immediate="true" />
 			<p:commandButton value="#{messages.cancel}" action="#{periodOffRequestHome.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>

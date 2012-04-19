@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.ConversationScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -64,13 +63,12 @@ public class GradeHome extends ConversationalEntityHome<Grade> {
 	}
 
 	@Override
-	@Produces
-	@Named("grade")
 	public Grade getInstance() {
 		return super.getInstance();
 	}
 
 	public boolean generateMaps() {
+		gradeSubjects = new ArrayList<GradeSubject>();
 		for (Subject subject : subjects) {
 			GradeSubject gradeSubject = new GradeSubject();
 			gradeSubject.setGrade(getInstance());
@@ -83,6 +81,7 @@ public class GradeHome extends ConversationalEntityHome<Grade> {
 	}
 
 	public boolean splitIntoGroups() {
+		studentGroups = new ArrayList<StudentGroup>();
 		for (GradeSubject gradeSubject : gradeSubjects) {
 			if (gradeSubject.getTeachers().size() > 1) {
 				for (Teacher teacher : gradeSubject.getTeachers()) {

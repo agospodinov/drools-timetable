@@ -2,7 +2,6 @@ package com.rakursy.timetable.home;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.ConversationScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,8 +20,6 @@ public class RoomHome extends ConversationalEntityHome<Room> {
 	private User user;
 
 	@Override
-	@Produces
-	@Named("room")
 	public Room getInstance() {
 		return super.getInstance();
 	}
