@@ -1,5 +1,10 @@
 package com.rakursy.timetable.home;
 
+import static ch.lambdaj.Lambda.exists;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static org.hamcrest.Matchers.equalTo;
+
 import java.util.List;
 
 import javax.ejb.Stateful;
@@ -8,7 +13,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.rakursy.timetable.model.PeriodOffRequest;
+import com.rakursy.timetable.model.School;
 import com.rakursy.timetable.model.Teacher;
+import com.rakursy.timetable.model.Timetable;
 import com.rakursy.timetable.model.User;
 
 @Stateful
@@ -67,6 +74,18 @@ public class PeriodOffRequestHome extends ConversationalEntityHome<PeriodOffRequ
 		getInstance().setSchool(user.getSchool());
 		getInstance().setTeacher(teacher);
 		return super.persist();
+	}
+	
+	@Override
+	public boolean remove() {
+		School school = user.getSchool();
+		for (Timetable timetable : school.getTimetables()) {
+			if (exists(timetable.getPeriodOffRequests(), having(on(PeriodOffRequest.class), equalTo(getInstance())))) {
+				return false;
+			}
+		}
+		
+		return super.remove();
 	}
 	
 }

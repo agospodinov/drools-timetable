@@ -1,5 +1,10 @@
 package com.rakursy.timetable.home;
 
+import static ch.lambdaj.Lambda.exists;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static org.hamcrest.Matchers.equalTo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +15,11 @@ import javax.inject.Named;
 
 import com.rakursy.timetable.model.Grade;
 import com.rakursy.timetable.model.GradeSubject;
+import com.rakursy.timetable.model.School;
 import com.rakursy.timetable.model.StudentGroup;
 import com.rakursy.timetable.model.Subject;
 import com.rakursy.timetable.model.Teacher;
+import com.rakursy.timetable.model.Timetable;
 import com.rakursy.timetable.model.User;
 
 @Stateful
@@ -125,4 +132,16 @@ public class GradeHome extends ConversationalEntityHome<Grade> {
 		return super.persist();
 	}
 
+	@Override
+	public boolean remove() {
+		School school = user.getSchool();
+		for (Timetable timetable : school.getTimetables()) {
+			if (exists(timetable.getGrades(), having(on(Grade.class), equalTo(getInstance())))) {
+				return false;
+			}
+		}
+		
+		return super.remove();
+	}
+	
 }
