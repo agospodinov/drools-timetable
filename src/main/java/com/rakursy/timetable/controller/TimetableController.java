@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
@@ -126,14 +125,8 @@ public class TimetableController {
 	}
 
 	private void clearWorkingSolution() {
-		terminateEarly();
+		solverManager.terminateEarly();
 		solverManager.clearWorkingSolution();
-	}
-
-	@PreDestroy
-	public void onPreDestroy() {
-		log.info("Session is getting destroyed. Stopping any possible leftover Solver.");
-		clearWorkingSolution();
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -311,5 +312,12 @@ public class SolverManager {
 	public Boolean hasAvailableThreads() {
 		return poolManager.getAvailableThreadCount() > 0;
 	}
-
+	
+	@PreDestroy
+	public void onPreDestroy() {
+		log.info("Session is getting destroyed. Stopping any possible leftover Solver.");
+		terminateEarly();
+		clearWorkingSolution();
+	}
+	
 }
