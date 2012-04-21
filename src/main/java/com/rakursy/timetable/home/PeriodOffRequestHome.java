@@ -12,6 +12,9 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.builder.BundleKey;
+
 import com.rakursy.timetable.model.PeriodOffRequest;
 import com.rakursy.timetable.model.School;
 import com.rakursy.timetable.model.Teacher;
@@ -28,6 +31,9 @@ public class PeriodOffRequestHome extends ConversationalEntityHome<PeriodOffRequ
 	@Inject
 	@Named("loggedInUser")
 	private User user;
+
+	@Inject
+	private Messages messages;
 	
 	private Teacher teacher;
 	private List<PeriodOffRequest> periodOffRequestsForTeacher;
@@ -81,6 +87,7 @@ public class PeriodOffRequestHome extends ConversationalEntityHome<PeriodOffRequ
 		School school = user.getSchool();
 		for (Timetable timetable : school.getTimetables()) {
 			if (exists(timetable.getPeriodOffRequests(), having(on(PeriodOffRequest.class), equalTo(getInstance())))) {
+				messages.error(new BundleKey("messages", "cannotRemove"));
 				return false;
 			}
 		}

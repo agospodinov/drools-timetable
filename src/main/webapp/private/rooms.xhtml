@@ -22,7 +22,7 @@
             	<f:facet name="header"><h:outputText value="#{messages.subjectList}" /></f:facet>
             	<h:outputText value="#{r.possibleSubjects}" />
             </p:column>
-            <p:column>
+            <p:column rendered="#{timetableController.solution eq null}">
             	<f:facet name="header"><h:outputText value="#{messages.actions}" /></f:facet>
             	<p:commandLink action="#{roomHome.load}">
             		<p:graphicImage id="editLinkImage" value="/resources/gfx/icons/page_white_edit.png" alt="#{messages.edit}" />

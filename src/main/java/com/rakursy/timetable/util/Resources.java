@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
 import org.jboss.logging.Logger;
+import org.jboss.seam.international.locale.DefaultLocale;
 import org.jboss.solder.core.ExtensionManaged;
 
 /**
@@ -24,6 +25,11 @@ import org.jboss.solder.core.ExtensionManaged;
  * </pre>
  */
 public class Resources {
+	
+	@SuppressWarnings("unused")
+	@Produces
+	@DefaultLocale
+	private String defaultLocaleKey = "bg_BG";
 	
 	@SuppressWarnings("unused")
 	@ExtensionManaged

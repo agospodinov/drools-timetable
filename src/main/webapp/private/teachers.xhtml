@@ -18,11 +18,11 @@
             	<f:facet name="header"><h:outputText value="#{messages.subjectList}" /></f:facet>
             	<h:outputText value="#{t.subjects}" />
             </p:column>
-            <p:column>
+            <p:column rendered="#{timetableController.solution eq null}">
             	<f:facet name="header"><h:outputText value="#{messages.actions}" /></f:facet>
             	<p:commandLink action="#{periodOffRequestHome.load}">
-            		<p:graphicImage id="periodOffRequestsLinkImage" value="/resources/gfx/icons/application_form.png" alt="#{messages.periodOffRequests}" />
-            		<p:tooltip for="periodOffRequestsLinkImage" value="#{messages.periodOffRequests}" />
+            		<p:graphicImage id="periodOffRequestsLinkImage" value="/resources/gfx/icons/application_form.png" alt="#{messages.periodOffRequestList}" />
+            		<p:tooltip for="periodOffRequestsLinkImage" value="#{messages.periodOffRequestList}" />
             		<f:setPropertyActionListener target="#{periodOffRequestHome.teacherId}" value="#{t.id}" />
             	</p:commandLink>
             	<p:commandLink action="#{teacherHome.load}">
