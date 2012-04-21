@@ -30,7 +30,7 @@
             	<f:facet name="header"><h:outputText value="#{messages.classCountPerWeek}" /></f:facet>
             	<h:outputText value="#{g.totalClassCountPerWeek}" />
             </p:column>
-            <p:column>
+            <p:column rendered="#{timetableController.solution eq null}">
             	<f:facet name="header"><h:outputText value="#{messages.actions}" /></f:facet>
             	<p:commandLink action="#{gradeHome.remove}">
             		<p:graphicImage id="removeLinkImage" value="/resources/gfx/icons/delete.png" alt="#{messages.remove}" />

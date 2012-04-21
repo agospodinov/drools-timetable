@@ -163,6 +163,7 @@ public class SolverManager {
 	public void clearWorkingSolution() {
 		if (solverState == SolverState.TERMINATED || solverState == SolverState.FINISHED_UNSAVED) {
 			poolManager.removeLock(user.getSchool());
+			solution = null;
 		}
 	}
 

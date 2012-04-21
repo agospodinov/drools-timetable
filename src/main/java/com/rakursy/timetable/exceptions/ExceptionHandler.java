@@ -1,15 +1,15 @@
 package com.rakursy.timetable.exceptions;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.application.ViewExpiredException;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
+import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.builder.BundleKey;
 import org.jboss.seam.security.AuthorizationException;
 import org.jboss.solder.exception.control.CaughtException;
 import org.jboss.solder.exception.control.Handles;
@@ -22,29 +22,29 @@ public class ExceptionHandler {
 	@Inject
 	@Category("exceptions")
 	private Logger log;
+	
+	@Inject
+	private Messages messages;
 
 	@Inject
 	private FacesContext facesContext;
 
 	public void handleAuthorizationException(@Handles CaughtException<AuthorizationException> e) {
 		log.warn("Handled AuthorizationException!");
-		ResourceBundle bundle = facesContext.getApplication().getResourceBundle(facesContext, "messages");
-		facesContext.addMessage(null, new FacesMessage(bundle.getString("accessDenied")));
+		messages.error(new BundleKey("messages", "accessDenied"));
 		redirect("/errors/denied.jsf");
 		e.handled();
 	}
 
 	public void handleConstraintViolationException(@Handles CaughtException<ConstraintViolationException> e) {
 		log.warn("Handled ConstraintViolationException!");
-		ResourceBundle bundle = facesContext.getApplication().getResourceBundle(facesContext, "messages");
-		facesContext.addMessage(null, new FacesMessage(bundle.getString("constraintViolation")));
+		messages.error(new BundleKey("messages", "cannotRemove"));
 		e.handled();
 	}
 	
 	public void handleViewExpiredException(@Handles CaughtException<ViewExpiredException> e) {
 		log.warn("Handled ViewExpiredException!");
-		ResourceBundle bundle = facesContext.getApplication().getResourceBundle(facesContext, "messages");
-		facesContext.addMessage(null, new FacesMessage(bundle.getString("sessionExpired")));
+		messages.error(new BundleKey("messages", "sessionExpired"));
 		redirect("/errors/sessionExpired.jsf");
 		e.handled();
 	}

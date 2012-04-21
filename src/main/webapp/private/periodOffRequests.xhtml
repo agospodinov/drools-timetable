@@ -8,9 +8,9 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<p>От тук се дефинират персонални изисквания за даден учител или по-точно кои часове в кои дни този учител НЕ желае да има.</p>
-		<p:dataTable id="periodOffRequestList" value="#{periodOffRequestHome.periodOffRequestsForTeacher}" var="por" 
-				paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false" rows="10">
-			<f:facet name="header"><h:outputText value="#{messages.periodOffRequests} #{messages.for} #{periodOffRequestHome.teacher.name}" /></f:facet>
+		<p:dataTable id="periodOffRequestList" value="#{periodOffRequestHome.periodOffRequestsForTeacher}" var="por" emptyMessage="#{messages.noneAdded} #{messages.periodOffRequests}."
+                     paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false" rows="10">
+			<f:facet name="header"><h:outputText value="#{messages.periodOffRequestList} #{messages.for} #{periodOffRequestHome.teacher.name}" /></f:facet>
 			
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
@@ -26,7 +26,7 @@
 				<f:facet name="header"><h:outputText value="#{messages.schoolHour}" /></f:facet>
 				<h:outputText value="#{por.schoolHourStartTime}" />
 			</p:column>
-			<p:column>
+			<p:column rendered="#{timetableController.solution eq null}">
             	<f:facet name="header"><h:outputText value="#{messages.actions}" /></f:facet>
             	<p:commandLink action="#{periodOffRequestHome.remove}">
             		<p:graphicImage id="removeLinkImage" value="/resources/gfx/icons/delete.png" alt="#{messages.remove}" />

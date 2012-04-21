@@ -8,6 +8,9 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.builder.BundleKey;
+
 import com.rakursy.timetable.model.Grade;
 import com.rakursy.timetable.model.Room;
 import com.rakursy.timetable.model.School;
@@ -27,6 +30,9 @@ public class SubjectHome extends ConversationalEntityHome<Subject> {
 	@Named("loggedInUser")
 	private User user;
 	
+	@Inject
+	private Messages messages;
+	
 	@Override
 	public Subject getInstance() {
 		return super.getInstance();
@@ -43,21 +49,25 @@ public class SubjectHome extends ConversationalEntityHome<Subject> {
 		School school = user.getSchool();
 		for (Teacher teacher : school.getTeachers()) {
 			if (exists(teacher.getSubjects(), having(on(Subject.class), equalTo(getInstance())))) {
+				messages.error(new BundleKey("messages", "cannotRemove"));
 				return false;
 			}
 		}
 		for (Room room : school.getRooms()) {
 			if (exists(room.getPossibleSubjects(), having(on(Subject.class), equalTo(getInstance())))) {
+				messages.error(new BundleKey("messages", "cannotRemove"));
 				return false;
 			}
 		}
 		for (Grade grade : school.getGrades()) {
 			if (exists(grade.getSubjectList(), having(on(Subject.class), equalTo(getInstance())))) {
+				messages.error(new BundleKey("messages", "cannotRemove"));
 				return false;
 			}
 		}
 		for (Timetable timetable : school.getTimetables()) {
 			if (exists(timetable.getSubjects(), having(on(Subject.class), equalTo(getInstance())))) {
+				messages.error(new BundleKey("messages", "cannotRemove"));
 				return false;
 			}
 		}

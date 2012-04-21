@@ -13,6 +13,9 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.builder.BundleKey;
+
 import com.rakursy.timetable.model.Grade;
 import com.rakursy.timetable.model.GradeSubject;
 import com.rakursy.timetable.model.School;
@@ -32,6 +35,9 @@ public class GradeHome extends ConversationalEntityHome<Grade> {
 	@Inject
 	@Named("loggedInUser")
 	private User user;
+	
+	@Inject
+	private Messages messages;
 
 	private List<Subject> subjects = new ArrayList<Subject>();
 	private List<GradeSubject> gradeSubjects = new ArrayList<GradeSubject>();
@@ -137,6 +143,7 @@ public class GradeHome extends ConversationalEntityHome<Grade> {
 		School school = user.getSchool();
 		for (Timetable timetable : school.getTimetables()) {
 			if (exists(timetable.getGrades(), having(on(Grade.class), equalTo(getInstance())))) {
+				messages.error(new BundleKey("messages", "cannotRemove"));
 				return false;
 			}
 		}
