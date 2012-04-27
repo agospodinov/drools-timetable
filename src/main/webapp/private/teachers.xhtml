@@ -7,7 +7,7 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<h2><h:outputText value="#{messages.teacherList}" /></h2>
-		<p:commandButton action="#{teacherAction.load}" value="#{messages.newM} #{messages.teacher}" /><br />
+		<p:commandButton action="#{teacherHome.load}" value="#{messages.newM} #{messages.teacher}" /><br />
 		<p:dataTable var="t" value="#{teachers}" emptyMessage="#{messages.noneAdded} #{messages.teachers}." 
 				paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="15">
 			<p:column>
@@ -18,10 +18,22 @@
             	<f:facet name="header"><h:outputText value="#{messages.subjectList}" /></f:facet>
             	<h:outputText value="#{t.subjects}" />
             </p:column>
-            <p:column>
+            <p:column rendered="#{timetableController.solution eq null}">
             	<f:facet name="header"><h:outputText value="#{messages.actions}" /></f:facet>
-            	<p:commandLink action="#{periodOffRequestAction.load}" value="#{messages.periodOffRequests}">
-            		<f:param name="teacherId" value="#{t.id}" />
+            	<p:commandLink action="#{periodOffRequestHome.load}">
+            		<p:graphicImage id="periodOffRequestsLinkImage" value="/resources/gfx/icons/application_form.png" alt="#{messages.periodOffRequestList}" />
+            		<p:tooltip for="periodOffRequestsLinkImage" value="#{messages.periodOffRequestList}" />
+            		<f:setPropertyActionListener target="#{periodOffRequestHome.teacherId}" value="#{t.id}" />
+            	</p:commandLink>
+            	<p:commandLink action="#{teacherHome.load}">
+            		<p:graphicImage id="editLinkImage" value="/resources/gfx/icons/page_white_edit.png" alt="#{messages.edit}" />
+            		<p:tooltip for="editLinkImage" value="#{messages.edit}" />
+            		<f:setPropertyActionListener target="#{teacherHome.id}" value="#{t.id}" />
+            	</p:commandLink>
+            	<p:commandLink action="#{teacherHome.remove}">
+            		<p:graphicImage id="removeLinkImage" value="/resources/gfx/icons/delete.png" alt="#{messages.remove}" />
+            		<p:tooltip for="removeLinkImage" value="#{messages.remove}" />
+            		<f:setPropertyActionListener target="#{teacherHome.id}" value="#{t.id}" />
             	</p:commandLink>
             </p:column>
 		</p:dataTable>

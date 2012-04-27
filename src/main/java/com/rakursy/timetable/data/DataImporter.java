@@ -84,9 +84,4 @@ public class DataImporter {
 		log.info("Successfully deleted generated timetables.");
 	}
 
-	public void importData(String filename) {
-		// importSQL(sess., new FileInputStream(filename));
-
-	}
-
 }

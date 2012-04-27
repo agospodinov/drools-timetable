@@ -7,7 +7,7 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<h2><h:outputText value="#{messages.subjectList}" /></h2>
-		<p:commandButton action="#{subjectAction.load}" value="#{messages.newM} #{messages.subject}" /><br />
+		<p:commandButton action="#{subjectHome.load}" value="#{messages.newM} #{messages.subject}" /><br />
 		<p:dataTable var="s" value="#{subjects}" emptyMessage="#{messages.noneAdded} #{messages.subjects}."
 				paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="15">
 			<p:column>
@@ -17,6 +17,19 @@
 			<p:column>
 				<f:facet name="header"><h:outputText value="#{messages.subjectWeight}" /></f:facet>
                 <h:outputText value="#{s.weight.toString}" />
+            </p:column>
+            <p:column rendered="#{timetableController.solution eq null}">
+            	<f:facet name="header"><h:outputText value="#{messages.actions}" /></f:facet>
+            	<p:commandLink action="#{subjectHome.load}">
+            		<p:graphicImage id="editLinkImage" value="/resources/gfx/icons/page_white_edit.png" alt="#{messages.edit}" />
+            		<p:tooltip for="editLinkImage" value="#{messages.edit}" />
+            		<f:setPropertyActionListener target="#{subjectHome.id}" value="#{s.id}" />
+            	</p:commandLink>
+            	<p:commandLink action="#{subjectHome.remove}">
+            		<p:graphicImage id="removeLinkImage" value="/resources/gfx/icons/delete.png" alt="#{messages.remove}" />
+            		<p:tooltip for="removeLinkImage" value="#{messages.remove}" />
+            		<f:setPropertyActionListener target="#{subjectHome.id}" value="#{s.id}" />
+            	</p:commandLink>
             </p:column>
 		</p:dataTable>
 	</ui:define>

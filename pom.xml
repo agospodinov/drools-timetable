@@ -5,7 +5,7 @@
 
 	<groupId>com.rakursy</groupId>
 	<artifactId>timetable</artifactId>
-	<version>1.0.0-CR2</version>
+	<version>1.0.0-CR3</version>
 	<packaging>war</packaging>
 
 	<name>School Timetable</name>
@@ -194,11 +194,11 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.0</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>pl.com.it-crowd</groupId>
 			<artifactId>seam3-persistence-framework</artifactId>
 			<version>1.0.2-SNAPSHOT</version>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>com.ocpsoft</groupId>
 			<artifactId>prettyfaces-jsf2</artifactId>
@@ -223,6 +223,11 @@
 			<groupId>org.jboss.logging</groupId>
 			<artifactId>jboss-logging</artifactId>
 			<version>3.1.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.1.2</version>
 		</dependency>
 	</dependencies>
 
@@ -317,13 +322,13 @@
 					<layout>default</layout>
 				</repository>
 				
-				<!-- <repository>
+				<repository>
 					<id>it-crowd.com.pl</id>
 					<url>http://artifactory.it-crowd.com.pl/repo</url>
 					<snapshots>
 						<enabled>true</enabled>
 					</snapshots>
-				</repository> -->
+				</repository>
 			</repositories>
 		</profile>
 

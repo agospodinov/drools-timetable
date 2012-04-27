@@ -7,9 +7,10 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<p:panel id="actions">
-			<p:commandButton id="start" value="#{messages.solve}" onclick="poll.start();saveButton.disable();" action="#{timetableController.solve}" /> &#160;
-			<p:commandButton id="stop" value="#{messages.terminate}" onclick="poll.stop();saveButton.enable();" action="#{timetableController.terminateEarly}" /> &#160;
-			<p:commandButton id="save" value="#{messages.save}" action="#{timetableController.save}" disabled="#{timetableController.solving}" widgetVar="saveButton" />
+			<p:commandButton id="start" value="#{messages.solve}" onclick="poll.start();saveButton.disable();clearButton.disable();" action="#{timetableController.solve}" /> &#160;
+			<p:commandButton id="stop" value="#{messages.terminate}" onclick="poll.stop();saveButton.enable();clearButton.enable();" action="#{timetableController.terminateEarly}" /> &#160;
+			<p:commandButton id="save" value="#{messages.save}" action="#{timetableController.save}" disabled="#{timetableController.solving}" widgetVar="saveButton" />&#160;
+			<p:commandButton id="clear" value="#{messages.cancel}" action="#{timetableController.clearWorkingSolution}" disabled="#{timetableController.solving}" widgetVar="clearButton" />
 		</p:panel>
 		<p:blockUI block="actions" trigger="start,stop,save">
 			<h:outputText value="#{messages.pleaseWait}" /><br />

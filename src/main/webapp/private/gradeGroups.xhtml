@@ -9,7 +9,7 @@
 		<p:panel>
 			<p:focus />
 			
-			<p:dataTable value="#{gradeAction.studentGroups}" var="sg">
+			<p:dataTable value="#{gradeHome.studentGroups}" var="sg">
 				<p:column>
 					<f:facet name="header"><h:outputText value="#{messages.oneSubject}" /></f:facet>
 					<h:outputText value="#{sg.subject}" />
@@ -24,8 +24,8 @@
 				</p:column>
 			</p:dataTable>
 			
-			<p:commandButton value="#{messages.save}" action="#{gradeAction.save}" />
-			<p:commandButton value="#{messages.cancel}" action="#{gradeAction.cancel}" immediate="true" />
+			<p:commandButton value="#{messages.save}" action="#{gradeHome.persist}" rendered="#{not gradeHome.managed}" />
+			<p:commandButton value="#{messages.cancel}" action="#{gradeHome.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>
 </ui:composition>

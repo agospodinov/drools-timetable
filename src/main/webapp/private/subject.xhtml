@@ -12,17 +12,20 @@
 				
 			<h:panelGrid columns="3">
 				<h:outputLabel value="#{messages.name}: *" for="subject_name" />
-				<p:inputText id="subject_name" value="#{newSubject.name}" label="#{messages.name}" required="true" />
+				<p:inputText id="subject_name" value="#{subjectHome.instance.name}" label="#{messages.name}" required="true" />
 				<p:message for="subject_name" />
 				
 				<h:outputLabel value="#{messages.subjectWeight}: *" for="subject_weight" />
-				<p:selectOneMenu id="subject_weight" value="#{newSubject.weight}" label="#{messages.subjectWeight}" required="true">
-					<f:selectItems value="#{subjectWeights}" var="sw" itemLabel="#{sw.toString()}" />
+				<p:selectOneMenu id="subject_weight" value="#{subjectHome.instance.weight}" label="#{messages.subjectWeight}" required="true">
+					<f:selectItems value="#{subjectWeights}" var="sw" itemLabel="#{sw.toString}" />
 				</p:selectOneMenu>
 				<p:message for="subject_weight" />
 			</h:panelGrid>
-			<p:commandButton value="#{messages.save}" action="#{subjectAction.save}" />
-			<p:commandButton value="#{messages.cancel}" action="#{subjectAction.cancel}" immediate="true" />
+			
+			<p:commandButton value="#{messages.save}" action="#{subjectHome.persist}" rendered="#{not subjectHome.managed}" />
+			<p:commandButton value="#{messages.save}" action="#{subjectHome.update}" rendered="#{subjectHome.managed}" />
+			<p:commandButton value="#{messages.remove}" action="#{subjectHome.remove}" rendered="#{subjectHome.managed}" immediate="true" />
+			<p:commandButton value="#{messages.cancel}" action="#{subjectHome.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>
 </ui:composition>

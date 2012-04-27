@@ -10,7 +10,7 @@
 		<p:panel>
 			<p:focus />
 			
-			<p:dataTable value="#{gradeAction.gradeSubjects}" var="gs">
+			<p:dataTable value="#{gradeHome.gradeSubjects}" var="gs">
 				<p:column>
 					<f:facet name="header"><h:outputText value="#{messages.oneSubject}" /></f:facet>
 					<h:outputText value="#{gs.subject.name}" />
@@ -18,7 +18,7 @@
 				<p:column>
 					<f:facet name="header"><h:outputText value="#{messages.oneTeacher}" /></f:facet>
 					<p:selectManyMenu value="#{gs.teachers}" required="true" style="height:100px">
-						<f:selectItems value="#{gradeAction.getTeachersForSubject(gs.subject)}" var="t" itemLabel="#{t.name}" />
+						<f:selectItems value="#{gradeHome.getTeachersForSubject(gs.subject)}" var="t" itemLabel="#{t.name}" />
 						<s:objectConverter />
 					</p:selectManyMenu>
 				</p:column>
@@ -28,8 +28,8 @@
 				</p:column>
 			</p:dataTable>
 			
-			<p:commandButton value="#{messages.next}" action="#{gradeAction.splitIntoGroups}" />
-			<p:commandButton value="#{messages.cancel}" action="#{gradeAction.cancel}" immediate="true" />
+			<p:commandButton value="#{messages.next}" action="#{gradeHome.splitIntoGroups}" rendered="#{not gradeHome.managed}" />
+			<p:commandButton value="#{messages.cancel}" action="#{gradeHome.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>
 </ui:composition>

@@ -8,14 +8,10 @@ import static org.hamcrest.Matchers.equalTo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
-import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -23,6 +19,8 @@ import org.drools.planner.core.Solver;
 import org.drools.planner.core.score.buildin.hardandsoft.DefaultHardAndSoftScore;
 import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScore;
 import org.jboss.logging.Logger;
+import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.builder.BundleKey;
 import org.jboss.seam.security.annotations.LoggedIn;
 import org.jboss.solder.logging.Category;
 
@@ -42,6 +40,9 @@ public class TimetableController {
 	@Inject
 	@Category("timetable")
 	private Logger log;
+	
+	@Inject
+	private Messages messages;
 
 	@Inject
 	private SolverManager solverManager;
@@ -102,9 +103,7 @@ public class TimetableController {
 				+ getSolution().getClass().getSimpleName());
 
 		if (!solverManager.hasAvailableThreads()) {
-			FacesContext context = FacesContext.getCurrentInstance();
-			ResourceBundle bundle = context.getApplication().getResourceBundle(context, "messages");
-			context.addMessage(null, new FacesMessage(bundle.getString("noAvailableThreads")));
+			messages.error(new BundleKey("messages", "noAvailableThreads"));
 		}
 		
 		solverManager.solve();
@@ -124,16 +123,10 @@ public class TimetableController {
 		log.info("Saved.");
 		return true;
 	}
-
-	private void clearWorkingSolution() {
-		terminateEarly();
+	
+	public void clearWorkingSolution() {
+		solverManager.terminateEarly();
 		solverManager.clearWorkingSolution();
-	}
-
-	@PreDestroy
-	public void onPreDestroy() {
-		log.info("Session is getting destroyed. Stopping any possible leftover Solver.");
-		clearWorkingSolution();
 	}
 
 }

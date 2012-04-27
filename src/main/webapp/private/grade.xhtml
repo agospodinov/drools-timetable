@@ -13,29 +13,30 @@
 				
 			<h:panelGrid columns="3">
 				<h:outputLabel value="#{messages.gradeName}: *" for="grade_name" />
-				<p:inputText id="grade_name" value="#{newGrade.name}" label="#{messages.gradeName}" required="true" />
+				<p:inputText id="grade_name" value="#{gradeHome.instance.name}" label="#{messages.gradeName}" required="true" />
 				<p:message for="grade_name" />
 				
 				<h:outputLabel value="#{messages.studentCount}: *" for="grade_studentCount" />
-				<p:inputText id="grade_studentCount" value="#{newGrade.studentCount}" label="#{messages.studentCount}" required="true" />
+				<p:inputText id="grade_studentCount" value="#{gradeHome.instance.studentCount}" label="#{messages.studentCount}" required="true" />
 				<p:message for="grade_studentCount" />
 				
 				<h:outputLabel value="#{messages.classRoom}: *" for="grade_classRoom" />
-				<p:selectOneMenu id="grade_classRoom" value="#{newGrade.classRoom}" label="#{messages.classRoom}" required="true">
+				<p:selectOneMenu id="grade_classRoom" value="#{gradeHome.instance.classRoom}" label="#{messages.classRoom}" required="true">
 					<f:selectItems value="#{rooms}" var="r" itemLabel="#{r.number.toString}" />
 					<s:objectConverter />
 				</p:selectOneMenu>
 				<p:message for="grade_classRoom" />
 				
 				<h:outputLabel value="#{messages.subjectList}: *" for="grade_subjects" />
-				<p:selectManyMenu id="grade_subjects" value="#{gradeAction.subjects}" label="#{messages.subjectList}" style="height:100px" required="true">
+				<p:selectManyMenu id="grade_subjects" value="#{gradeHome.subjects}" label="#{messages.subjectList}" style="height:100px" required="true">
+					<f:attribute name="collectionType" value="java.util.ArrayList" />
 					<f:selectItems value="#{subjects}" var="s" itemLabel="#{s.name}" />
 					<s:objectConverter />
 				</p:selectManyMenu>
 				<p:message for="grade_subjects" />
 			</h:panelGrid>
-			<p:commandButton value="#{messages.next}" action="#{gradeAction.generateMaps}" />
-			<p:commandButton value="#{messages.cancel}" action="#{gradeAction.cancel}" immediate="true" />
+			<p:commandButton value="#{messages.next}" action="#{gradeHome.generateMaps}" rendered="#{not gradeHome.managed}" />
+			<p:commandButton value="#{messages.cancel}" action="#{gradeHome.cancel}" immediate="true" />
 		</p:panel>
 	</ui:define>
 </ui:composition>
