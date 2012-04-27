@@ -4,13 +4,13 @@ package com.rakursy.timetable.rules;
 
 import org.drools.planner.core.score.constraint.ConstraintType;
 import org.drools.planner.core.score.constraint.IntConstraintOccurrence;
-import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScoreCalculator;
+import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScoreHolder;
 
 import com.rakursy.timetable.model.*;
 import java.util.ArrayList;
 import java.lang.Math;
 
-global HardAndSoftScoreCalculator scoreCalculator;
+global HardAndSoftScoreHolder scoreHolder;
 
 // ############################################################################
 // # Hard constraints
@@ -25,7 +25,7 @@ rule "conflictingTeacherTimes"
     	$sc2 : SchoolClass( studentGroup == $sg2, period == $period, uuid != $uuid )
     then
         insertLogical(new IntConstraintOccurrence("conflictingTeacherTimes", ConstraintType.NEGATIVE_HARD, 
-        		15, 
+        		40, 
         		$sc1, $sc2, $teacher));
 end
 
@@ -38,7 +38,7 @@ rule "conflictingGradeTimes"
     	$sc2 : SchoolClass( studentGroup == $sg2, period == $period, uuid != $uuid )
     then
         insertLogical(new IntConstraintOccurrence("conflictingGradeTimes", ConstraintType.NEGATIVE_HARD, 
-        		15,
+        		40,
         		$sc1, $sc2, $sg1, $sg2));
 end
 
@@ -49,40 +49,18 @@ rule "conflictingRoomTimes"
     	$sc2 : SchoolClass( room == $room, period == $period, uuid > $uuid )
 	then
         insertLogical(new IntConstraintOccurrence("conflictingRoomTimes", ConstraintType.NEGATIVE_HARD, 
-        		15, 
+        		40, 
         		$sc1, $sc2, $room));
-end
-
-#rule "subjectWeightWithinLimits"
-#	when
-#		$grade : Grade()
-#		$subjects : ArrayList() from accumulate ( SchoolClass( studentGroup.grade == $grade, $subject : subject ), collectList( $subject ) )
-#		$totalWeight : Number() from accumulate ( Subject( $weight : weight ) from $subjects , sum( $weight ) )
-#		$sd : SchoolDay( $totalWeight < minAllowedWeight || $totalWeight > maxAllowedWeight )
-#	then
-#		insertLogical(new IntConstraintOccurrence("subjectWeightWithinLimits", ConstraintType.NEGATIVE_HARD, 
-#				$grade, $totalWeight, $sd));
-#end
-
-rule "exactClassCountPerSubjectPerWeek"
-	when
-		$gradeSubject : GradeSubject( $subject : subject )
-		$grade : Grade( subjects contains $gradeSubject )
-		//$studentGroup : StudentGroup( grade == $grade, subject == $subject )
-		$classCount : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, subject == $subject, $uuid : uuid ) , count( $uuid ) )
-		eval( $grade.getClassCountForSubject($subject).intValue() != $classCount.intValue() )
-	then
-		insertLogical(new IntConstraintOccurrence("exactClassCountPerSubjectPerWeek", ConstraintType.NEGATIVE_HARD, 
-				$subject, $classCount));
 end
 
 // The total number of seats in the room of a given school class cannot be lower than the number of students
 rule "roomCapacityMustSuffice"
 	when
 		$room : Room( $capacity : capacity )
-		SchoolClass( room == $room, studentGroup.studentCount > $capacity )
+		SchoolClass( room == $room, studentGroup.studentCount > $capacity, $studentCount : studentGroup.studentCount )
 	then
-		insertLogical(new IntConstraintOccurrence("roomCapacityMustSuffice", ConstraintType.NEGATIVE_HARD, 
+		insertLogical(new IntConstraintOccurrence("roomCapacityMustSuffice", ConstraintType.NEGATIVE_HARD,
+				$studentCount - $capacity,
 				$room));
 end
 
@@ -93,7 +71,8 @@ rule "roomCannotBeHostToAllSubjects"
 		$room : Room( possibleSubjects not contains $subject )
 		$sc : SchoolClass( room == $room, subject == $subject )
 	then
-		insertLogical(new IntConstraintOccurrence("roomCannotBeHostToAllSubjects", ConstraintType.NEGATIVE_HARD, 
+		insertLogical(new IntConstraintOccurrence("roomCannotBeHostToAllSubjects", ConstraintType.NEGATIVE_HARD,
+				25, 
 				$sc, $room, $subject));
 end
 
@@ -103,32 +82,33 @@ rule "teacherCanOnlyTeachSomeSubjects"
 		$teacher : Teacher( subjects not contains $subject )
 		$sc : SchoolClass( teacher == $teacher, subject == $subject )
 	then
-		insertLogical(new IntConstraintOccurrence("teacherCanOnlyTeachSomeSubjects", ConstraintType.NEGATIVE_HARD, 
+		insertLogical(new IntConstraintOccurrence("teacherCanOnlyTeachSomeSubjects", ConstraintType.NEGATIVE_HARD,
+				25, 
 				$sc, $teacher, $subject));
 end
 
-rule "studentGroupsMustHaveTheSameClass"
-	when
-		$sg1 : StudentGroup( $grade : grade, $subject : subject, $teacher : teacher, wholeGrade == false, $sgid : id )
-		$sg2 : StudentGroup( grade == $grade, subject == $subject, teacher != $teacher, wholeGrade == false, id != $sgid )
-		SchoolClass( studentGroup == $sg1, $period : period, $scid : uuid )
-		not SchoolClass( studentGroup == $sg2, period == $period, uuid != $scid ) 
-	then
-		insertLogical(new IntConstraintOccurrence("studentGroupsMustHaveTheSameClass", ConstraintType.NEGATIVE_HARD, 
-				2, 
-				$sg1, $sg2, $grade, $subject, $period));
-end
+#rule "studentGroupsMustHaveTheSameClass"
+#	when
+#		$sg1 : StudentGroup( $grade : grade, $subject : subject, $teacher : teacher, wholeGrade == false, $sgid : id )
+#		$sg2 : StudentGroup( grade == $grade, subject == $subject, teacher != $teacher, wholeGrade == false, id != $sgid )
+#		SchoolClass( studentGroup == $sg1, $period : period, $scid : uuid )
+#		not SchoolClass( studentGroup == $sg2, period == $period, uuid != $scid ) 
+#	then
+#		insertLogical(new IntConstraintOccurrence("studentGroupsMustHaveTheSameClass", ConstraintType.NEGATIVE_HARD, 
+#				2, 
+#				$sg1, $sg2, $grade, $subject, $period));
+#end
 
 rule "schoolClassesMustBeInARow"
 	when
 		$schoolDay : SchoolDay()
-		SchoolClass( $grade : studentGroup.grade, period.schoolDay == $schoolDay, $period1 : period )
-		SchoolClass( studentGroup.grade == $grade, period.schoolHour.actualStartTime > $period1.schoolHour.actualStartTime + 1, 
-				period.schoolDay == $schoolDay, $period2 : period )
+		SchoolClass( $grade : studentGroup.grade, schoolDay == $schoolDay, $period1 : period )
+		SchoolClass( studentGroup.grade == $grade, schoolHourStartTime > $period1.schoolHour.actualStartTime + 1, 
+				schoolDay == $schoolDay, $period2 : period )
 				
-		not( SchoolClass( period.schoolHour.actualStartTime > $period1.schoolHour.actualStartTime 
-						&& period.schoolHour.actualStartTime < $period2.schoolHour.actualStartTime,
-						period.schoolDay == $schoolDay,
+		not( SchoolClass( schoolHourStartTime > $period1.schoolHour.actualStartTime 
+						&& schoolHourStartTime < $period2.schoolHour.actualStartTime,
+						schoolDay == $schoolDay,
 						studentGroup.grade == $grade ) )
 	then
 		insertLogical(new IntConstraintOccurrence("schoolClassesMustBeInARow", ConstraintType.NEGATIVE_HARD, 
@@ -140,8 +120,8 @@ rule "schoolClassesMustStartAtTheBeginnining"
 	when
 		$grade : Grade()
 		$schoolDay : SchoolDay()
-		SchoolClass( studentGroup.grade == $grade, period.schoolHour.actualStartTime > 1, period.schoolDay == $schoolDay, $period : period )
-		not( exists( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay, period.schoolHour.actualStartTime < $period.schoolHour.actualStartTime ) ) )
+		SchoolClass( studentGroup.grade == $grade, schoolHourStartTime > 1, schoolDay == $schoolDay, $period : period )
+		not( exists( SchoolClass( studentGroup.grade == $grade, schoolDay == $schoolDay, schoolHourStartTime < $period.schoolHour.actualStartTime ) ) )
 		
 		#$period : Period( schoolHour.actualStartTime == 1 )
 		#not( SchoolClass( studentGroup.grade == $grade, period == $period ) )
@@ -158,8 +138,8 @@ end
 rule "optimalSchoolClassPlacement"
 	when
 		$schoolDay : SchoolDay()
-		SchoolClass( $subject : subject, $grade : studentGroup.grade, $period1 : period, period.schoolDay == $schoolDay, $uuid : uuid )
-		SchoolClass( subject == $subject, studentGroup.grade == $grade, $period2 : period, period.schoolDay == $schoolDay, uuid > $uuid )
+		SchoolClass( $subject : subject, $grade : studentGroup.grade, $period1 : period, schoolDay == $schoolDay, $uuid : uuid )
+		SchoolClass( subject == $subject, studentGroup.grade == $grade, $period2 : period, schoolDay == $schoolDay, uuid > $uuid )
 		eval( Math.abs($period1.getSchoolHour().getActualStartTime() - $period2.getSchoolHour().getActualStartTime() ) > 1 )
 	then
 		insertLogical(new IntConstraintOccurrence("optimalSchoolClassPlacement", ConstraintType.NEGATIVE_SOFT, 
@@ -169,8 +149,8 @@ end
 rule "optimalSchoolClassesForTeachers"
 	when
 		$schoolDay : SchoolDay()
-		SchoolClass( $teacher : teacher, $period1 : period, period.schoolDay == $schoolDay, $uuid : uuid )
-		SchoolClass( teacher == $teacher, $period2 : period, period.schoolDay == $schoolDay, $uuid > uuid )
+		SchoolClass( $teacher : teacher, $period1 : period, schoolDay == $schoolDay, $uuid : uuid )
+		SchoolClass( teacher == $teacher, $period2 : period, schoolDay == $schoolDay, $uuid > uuid )
 		eval( Math.abs($period1.getSchoolHour().getActualStartTime() - $period2.getSchoolHour().getActualStartTime() ) > 1 )
 	then
 		insertLogical(new IntConstraintOccurrence("optimalSchoolClassPlacement", ConstraintType.NEGATIVE_SOFT, 
@@ -194,8 +174,8 @@ rule "schoolClassesProperlyDistributed"
 		$grade : Grade()
 		$schoolDay1 : SchoolDay()
 		$schoolDay2 : SchoolDay(this != $schoolDay1)
-		$classesInSchoolDay1 : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay1, $uuid : uuid ) , count( $uuid ) )
-		$classesInSchoolDay2 : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay2, $uuid : uuid ) , count( $uuid ) )
+		$classesInSchoolDay1 : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, schoolDay == $schoolDay1, $uuid : uuid ) , count( $uuid ) )
+		$classesInSchoolDay2 : Number() from accumulate ( SchoolClass( studentGroup.grade == $grade, schoolDay == $schoolDay2, $uuid : uuid ) , count( $uuid ) )
 		eval( Math.abs($classesInSchoolDay1.intValue() - $classesInSchoolDay2.intValue()) > 2 )
 	then
 		insertLogical(new IntConstraintOccurrence("schoolClassesProperlyDistributed", ConstraintType.NEGATIVE_SOFT, 
@@ -218,7 +198,7 @@ rule "noEmptyDays"
 	when
 		$schoolDay : SchoolDay()
 		$grade : Grade()
-		Number(intValue == 0) from accumulate ( SchoolClass( studentGroup.grade == $grade, period.schoolDay == $schoolDay, $uuid : uuid ) , count( $uuid ) )
+		Number(intValue == 0) from accumulate ( SchoolClass( studentGroup.grade == $grade, schoolDay == $schoolDay, $uuid : uuid ) , count( $uuid ) )
 	then
 		insertLogical(new IntConstraintOccurrence("noEmptyDays", ConstraintType.NEGATIVE_SOFT, 
 				8,
@@ -238,7 +218,7 @@ rule "hardConstraintsBroken"
             sum($weight)
         )
     then
-        scoreCalculator.setHardConstraintsBroken($hardTotal.intValue());
+        scoreHolder.setHardConstraintsBroken($hardTotal.intValue());
 end
 
 // Accumulate soft constraints
@@ -250,6 +230,6 @@ rule "softConstraintsBroken"
             sum($weight) 
         )
     then
-        scoreCalculator.setSoftConstraintsBroken($softTotal.intValue());
+        scoreHolder.setSoftConstraintsBroken($softTotal.intValue());
 end
 

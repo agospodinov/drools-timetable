@@ -4,11 +4,10 @@
 	<solutionClass>com.rakursy.timetable.model.Timetable</solutionClass>
 	<planningEntityClass>com.rakursy.timetable.model.SchoolClass</planningEntityClass>
 
-	<scoreDrl>/com/rakursy/timetable/rules/timetableScoreRules.drl</scoreDrl>
-
-	<scoreDefinition>
+	<scoreDirectorFactory>
 		<scoreDefinitionType>HARD_AND_SOFT</scoreDefinitionType>
-	</scoreDefinition>
+		<scoreDrl>/com/rakursy/timetable/rules/timetableScoreRules.drl</scoreDrl>
+	</scoreDirectorFactory>
 
 	<termination>
 		<!-- ONLY FOR DEMONSTRATION PURPOSES -->
@@ -17,7 +16,7 @@
 	</termination>
 
 	<constructionHeuristic>
-		<constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+		<constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
 	</constructionHeuristic>
  	<localSearch>
 		<selector>
@@ -33,7 +32,7 @@
 		</selector>
  		<acceptor>
  			<solutionTabuSize>1000</solutionTabuSize>
-			<propertyTabuSize>10</propertyTabuSize>
+			<planningEntityTabuSize>10</planningEntityTabuSize>
 			<simulatedAnnealingStartingTemperature>4hard/100soft</simulatedAnnealingStartingTemperature>
 		</acceptor>
 		<forager>

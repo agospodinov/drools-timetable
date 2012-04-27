@@ -1,21 +1,18 @@
 package com.rakursy.timetable.solver.move;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.drools.FactHandle;
-import org.drools.WorkingMemory;
-import org.drools.planner.core.localsearch.decider.acceptor.tabu.TabuPropertyEnabled;
 import org.drools.planner.core.move.Move;
+import org.drools.planner.core.score.director.ScoreDirector;
 
 import com.rakursy.timetable.model.Period;
 import com.rakursy.timetable.model.SchoolClass;
 
-public class PeriodChangeMove implements Move, TabuPropertyEnabled {
+public class PeriodChangeMove implements Move {
 
 	private SchoolClass schoolClass;
 	private Period period;
@@ -26,25 +23,30 @@ public class PeriodChangeMove implements Move, TabuPropertyEnabled {
 	}
 
 	@Override
-	public boolean isMoveDoable(WorkingMemory workingMemory) {
+	public boolean isMoveDoable(ScoreDirector scoreDirector) {
 		return !ObjectUtils.equals(period, schoolClass.getPeriod());
 	}
 
 	@Override
-	public Move createUndoMove(WorkingMemory workingMemory) {
+	public Move createUndoMove(ScoreDirector scoreDirector) {
 		return new PeriodChangeMove(schoolClass, schoolClass.getPeriod());
 	}
 
 	@Override
-	public void doMove(WorkingMemory workingMemory) {
-		FactHandle schoolClassHandle = workingMemory.getFactHandle(schoolClass);
+	public void doMove(ScoreDirector scoreDirector) {
+        scoreDirector.beforeAllVariablesChanged(schoolClass);
 		schoolClass.setPeriod(period);
-		workingMemory.update(schoolClassHandle, schoolClass);
+        scoreDirector.afterAllVariablesChanged(schoolClass);
+	}
+	
+	@Override
+	public Collection<? extends Object> getPlanningEntities() {
+		return Collections.singletonList(schoolClass);
 	}
 
 	@Override
-	public Collection<? extends Object> getTabuProperties() {
-		return Collections.singletonList(Arrays.asList(schoolClass, period));
+	public Collection<? extends Object> getPlanningValues() {
+		return Collections.singletonList(period);
 	}
 
 	@Override
