@@ -1,11 +1,13 @@
 package com.rakursy.timetable.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -39,6 +41,9 @@ public class StudentGroup implements Serializable {
 	
 	@NotNull
 	private Boolean wholeGrade;
+	
+	@OneToMany
+	private List<StudentGroup> linkedWith;
 	
 	@NotNull
 	@ManyToOne
@@ -128,6 +133,14 @@ public class StudentGroup implements Serializable {
 
 	public void setWholeGrade(Boolean wholeGrade) {
 		this.wholeGrade = wholeGrade;
+	}
+
+	public List<StudentGroup> getLinkedWith() {
+		return linkedWith;
+	}
+
+	public void setLinkedWith(List<StudentGroup> linkedWith) {
+		this.linkedWith = linkedWith;
 	}
 
 	public School getSchool() {

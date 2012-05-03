@@ -190,7 +190,7 @@ public class SolverManager {
 				em.createQuery("select gs from GradeSubject gs where gs.school = :school")
 				.setParameter("school", user.getSchool()).getResultList()));
 		List<StudentGroup> studentGroups = new ArrayList<StudentGroup>(new LinkedHashSet<StudentGroup>(
-				em.createQuery("select sg from StudentGroup sg where sg.school = :school")
+				em.createQuery("select sg from StudentGroup sg left join fetch sg.linkedWith where sg.school = :school")
 				.setParameter("school", user.getSchool()).getResultList()));
 		List<Teacher> teachers = new ArrayList<Teacher>(new LinkedHashSet<Teacher>(
 				em.createQuery("select t from Teacher t join fetch t.subjects where t.school = :school")

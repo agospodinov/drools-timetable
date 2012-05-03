@@ -1,10 +1,6 @@
 package com.rakursy.timetable.model;
 
-import static ch.lambdaj.Lambda.*;
-import static org.hamcrest.Matchers.*;
-
 import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -172,14 +168,5 @@ public class SchoolClass implements Serializable {
 		}
 		return period.getSchoolHour().getActualStartTime();
 	}
-
-//	@Transient
-//	public List<Period> getPossiblePeriods() {
-//		return select(school.(), having(on(Room.class).getPossibleSubjects(), hasItem(getSubject())));
-//	}
 	
-	@Transient
-	public List<Room> getPossibleRooms() {
-		return select(school.getRooms(), having(on(Room.class).getPossibleSubjects(), hasItem(getSubject())));
-	}
 }
