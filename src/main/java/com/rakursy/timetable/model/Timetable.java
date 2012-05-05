@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -20,6 +21,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.drools.planner.api.domain.solution.PlanningEntityCollectionProperty;
 import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScore;
 import org.drools.planner.core.solution.Solution;
@@ -266,5 +268,35 @@ public class Timetable implements Solution<HardAndSoftScore>, Serializable {
 	public void setScore(HardAndSoftScore score) {
 		this.score = score;
 	}
+	
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (id == null || !(o instanceof Timetable)) {
+            return false;
+        } else {
+            Timetable other = (Timetable) o;
+            if (schoolClasses.size() != other.schoolClasses.size()) {
+                return false;
+            }
+            for (Iterator<SchoolClass> it = schoolClasses.iterator(), otherIt = other.schoolClasses.iterator(); it.hasNext();) {
+                SchoolClass schoolClass = it.next();
+                SchoolClass otherSchoolClass = otherIt.next();
+                if (!schoolClass.equals(otherSchoolClass)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    public int hashCode() {
+        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
+        for (SchoolClass schoolClass : schoolClasses) {
+            hashCodeBuilder.append(schoolClass.hashCode());
+        }
+        return hashCodeBuilder.toHashCode();
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.rakursy.timetable.controller;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -99,7 +100,11 @@ public class SolverManager {
 		// method not returning since the solver is working
 		solverTask = poolManager.submitSolver(new Runnable() {
 			public void run() {
-				solver.solve();
+				try {
+					solver.solve();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 				synchronized (solution) {
 					solution = (Timetable) solver.getBestSolution();
 				}
@@ -164,6 +169,7 @@ public class SolverManager {
 		if (solverState == SolverState.TERMINATED || solverState == SolverState.FINISHED_UNSAVED) {
 			poolManager.removeLock(user.getSchool());
 			solution = null;
+			solverState = SolverState.NEW;
 		}
 	}
 
@@ -178,21 +184,27 @@ public class SolverManager {
 		Timetable timetable = new Timetable();
 
 		// Get the actual data from the database
-		List<Grade> grades = em.createQuery("select g from Grade g where g.school = :school")
-				.setParameter("school", user.getSchool()).getResultList();
-		List<GradeSubject> gradeSubjects = em.createQuery("select gs from GradeSubject gs where gs.school = :school")
-				.setParameter("school", user.getSchool()).getResultList();
-		List<StudentGroup> studentGroups = em.createQuery("select sg from StudentGroup sg where sg.school = :school")
-				.setParameter("school", user.getSchool()).getResultList();
-		List<Teacher> teachers = em.createQuery("select t from Teacher t where t.school = :school")
-				.setParameter("school", user.getSchool()).getResultList();
-		List<PeriodOffRequest> periodOffRequests = em
-				.createQuery("select por from PeriodOffRequest por where por.school = :school")
-				.setParameter("school", user.getSchool()).getResultList();
-		List<Subject> subjects = em.createQuery("select s from Subject s where s.school = :school")
-				.setParameter("school", user.getSchool()).getResultList();
-		List<Room> rooms = em.createQuery("select r from Room r where r.school = :school")
-				.setParameter("school", user.getSchool()).getResultList();
+		List<Grade> grades = new ArrayList<Grade>(new LinkedHashSet<Grade>(
+				em.createQuery("select g from Grade g where g.school = :school")
+				.setParameter("school", user.getSchool()).getResultList()));
+		List<GradeSubject> gradeSubjects = new ArrayList<GradeSubject>(new LinkedHashSet<GradeSubject>(
+				em.createQuery("select gs from GradeSubject gs where gs.school = :school")
+				.setParameter("school", user.getSchool()).getResultList()));
+		List<StudentGroup> studentGroups = new ArrayList<StudentGroup>(new LinkedHashSet<StudentGroup>(
+				em.createQuery("select sg from StudentGroup sg left join fetch sg.linkedWith where sg.school = :school")
+				.setParameter("school", user.getSchool()).getResultList()));
+		List<Teacher> teachers = new ArrayList<Teacher>(new LinkedHashSet<Teacher>(
+				em.createQuery("select t from Teacher t join fetch t.subjects where t.school = :school")
+				.setParameter("school", user.getSchool()).getResultList()));
+		List<PeriodOffRequest> periodOffRequests = new ArrayList<PeriodOffRequest>(new LinkedHashSet<PeriodOffRequest>(
+				em.createQuery("select por from PeriodOffRequest por where por.school = :school")
+				.setParameter("school", user.getSchool()).getResultList()));
+		List<Subject> subjects = new ArrayList<Subject>(new LinkedHashSet<Subject>(
+				em.createQuery("select s from Subject s where s.school = :school")
+				.setParameter("school", user.getSchool()).getResultList()));
+		List<Room> rooms = new ArrayList<Room>(new LinkedHashSet<Room>(
+				em.createQuery("select r from Room r join fetch r.possibleSubjects where r.school = :school")
+				.setParameter("school", user.getSchool()).getResultList()));
 
 		List<SchoolDay> schoolDays = new ArrayList<SchoolDay>();
 		List<SchoolHour> schoolHours = new ArrayList<SchoolHour>();
@@ -291,6 +303,7 @@ public class SolverManager {
 		if (solverState == SolverState.FINISHED_SAVED) {
 			poolManager.removeLock(user.getSchool());
 			solution = null;
+			solverState = SolverState.NEW;
 		}
 	}
 	

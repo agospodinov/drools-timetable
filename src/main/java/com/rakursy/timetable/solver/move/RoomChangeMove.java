@@ -6,15 +6,13 @@ import java.util.Collections;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.drools.FactHandle;
-import org.drools.WorkingMemory;
-import org.drools.planner.core.localsearch.decider.acceptor.tabu.TabuPropertyEnabled;
 import org.drools.planner.core.move.Move;
+import org.drools.planner.core.score.director.ScoreDirector;
 
 import com.rakursy.timetable.model.Room;
 import com.rakursy.timetable.model.SchoolClass;
 
-public class RoomChangeMove implements Move, TabuPropertyEnabled {
+public class RoomChangeMove implements Move {
 
 	private SchoolClass schoolClass;
 	private Room room;
@@ -25,28 +23,30 @@ public class RoomChangeMove implements Move, TabuPropertyEnabled {
 	}
 
 	@Override
-	public boolean isMoveDoable(WorkingMemory workingMemory) {
-		return !ObjectUtils.equals(room, schoolClass.getRoom())
-				// and is the move necessary?
-				&& (!room.getPossibleSubjects().contains(schoolClass.getSubject())
-						|| room == schoolClass.getStudentGroup().getGrade().getClassRoom());
+	public boolean isMoveDoable(ScoreDirector scoreDirector) {
+		return !ObjectUtils.equals(room, schoolClass.getRoom());
 	}
 
 	@Override
-	public Move createUndoMove(WorkingMemory workingMemory) {
+	public Move createUndoMove(ScoreDirector scoreDirector) {
 		return new RoomChangeMove(schoolClass, schoolClass.getRoom());
 	}
 
 	@Override
-	public void doMove(WorkingMemory workingMemory) {
-		FactHandle schoolClassHandle = workingMemory.getFactHandle(schoolClass);
+	public void doMove(ScoreDirector scoreDirector) {
+        scoreDirector.beforeAllVariablesChanged(schoolClass);
 		schoolClass.setRoom(room);
-		workingMemory.update(schoolClassHandle, schoolClass);
+        scoreDirector.afterAllVariablesChanged(schoolClass);
 	}
-	
+
 	@Override
-	public Collection<? extends Object> getTabuProperties() {
+	public Collection<? extends Object> getPlanningEntities() {
 		return Collections.singletonList(schoolClass);
+	}
+
+	@Override
+	public Collection<? extends Object> getPlanningValues() {
+		return Collections.singletonList(room);
 	}
 	
 	@Override

@@ -14,10 +14,13 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.drools.planner.api.domain.entity.PlanningEntity;
 import org.drools.planner.api.domain.variable.PlanningVariable;
-import org.drools.planner.api.domain.variable.ValueRangeFromSolutionProperty;
+import org.drools.planner.api.domain.variable.ValueRange;
+import org.drools.planner.api.domain.variable.ValueRangeType;
+
+import com.rakursy.timetable.solver.construction.SchoolClassDifficultyFactory;
 
 @Entity
-@PlanningEntity
+@PlanningEntity(difficultyWeightFactoryClass = SchoolClassDifficultyFactory.class)
 public class SchoolClass implements Serializable {
 
 	private static final long serialVersionUID = 2923161934264247932L;
@@ -105,7 +108,7 @@ public class SchoolClass implements Serializable {
 	}
 	
 	@PlanningVariable
-	@ValueRangeFromSolutionProperty(propertyName="periods")
+	@ValueRange(type=ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty="periods")
 	public Period getPeriod() {
 		return period;
 	}
@@ -115,7 +118,7 @@ public class SchoolClass implements Serializable {
 	}
 
 	@PlanningVariable
-	@ValueRangeFromSolutionProperty(propertyName="rooms")
+	@ValueRange(type=ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty="rooms")
 	public Room getRoom() {
 		return room;
 	}
@@ -141,6 +144,29 @@ public class SchoolClass implements Serializable {
 	public Teacher getTeacher() {
 		return studentGroup.getTeacher();
 	}
-
-
+	
+	@Transient
+	public SchoolDay getSchoolDay() {
+		if (period == null) {
+			return null;
+		}
+		return period.getSchoolDay();
+	}
+	
+	@Transient
+	public SchoolHour getSchoolHour() {
+		if (period == null) {
+			return null;
+		}
+		return period.getSchoolHour();
+	}
+	
+	@Transient
+	public Integer getSchoolHourStartTime() {
+		if (period == null || period.getSchoolHour() == null) {
+			return null;
+		}
+		return period.getSchoolHour().getActualStartTime();
+	}
+	
 }
