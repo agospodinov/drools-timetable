@@ -169,6 +169,7 @@ public class SolverManager {
 		if (solverState == SolverState.TERMINATED || solverState == SolverState.FINISHED_UNSAVED) {
 			poolManager.removeLock(user.getSchool());
 			solution = null;
+			solverState = SolverState.NEW;
 		}
 	}
 
@@ -302,6 +303,7 @@ public class SolverManager {
 		if (solverState == SolverState.FINISHED_SAVED) {
 			poolManager.removeLock(user.getSchool());
 			solution = null;
+			solverState = SolverState.NEW;
 		}
 	}
 	

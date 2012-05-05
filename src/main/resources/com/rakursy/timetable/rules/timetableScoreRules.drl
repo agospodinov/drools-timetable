@@ -8,6 +8,7 @@ import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScoreHolder;
 
 import com.rakursy.timetable.model.*;
 import java.util.ArrayList;
+import java.util.Set;
 import java.lang.Math;
 
 global HardAndSoftScoreHolder scoreHolder;
@@ -159,10 +160,10 @@ rule "gradesMustHaveAtLeastFourClassesADay"
 	when
 		$schoolDay : SchoolDay()
 		$grade : Grade()
-		Number(intValue < 4, $value : intValue) from accumulate ( SchoolClass( studentGroup.grade == $grade, schoolDay == $schoolDay, $uuid : uuid ) , count( $uuid ) )
+		Set( size < 4, $size : size ) from accumulate ( SchoolClass( studentGroup.grade == $grade, schoolDay == $schoolDay, $schoolHourStartTime : schoolHourStartTime ) , collectSet( $schoolHourStartTime ) )
 	then
 		insertLogical(new IntConstraintOccurrence("gradesMustHaveAtLeastFourClassesADay", ConstraintType.NEGATIVE_HARD, 
-				4 - $value,
+				4 - $size,
 				$grade, $schoolDay));
 end
 
@@ -199,7 +200,7 @@ rule "schoolClassesInClassRoomIfPossible"
 		$room : Room( possibleSubjects contains $subject )
 		$grade : Grade( classRoom == $room )
 		SchoolClass( subject == $subject, studentGroup.grade == $grade, room != $room, $period : period, $uuid : uuid )
-		not(exists( SchoolClass( subject  == $subject, studentGroup.grade == $grade, room == $room, period == $period, uuid != $uuid ) ))
+		not(exists( SchoolClass( subject  == $subject, studentGroup.grade == $grade, room == $room, period == $period, uuid > $uuid ) ))
 	then
 		insertLogical(new IntConstraintOccurrence("schoolClassesInClassRoomIfPossible", ConstraintType.NEGATIVE_SOFT, 
 				$subject, $room, $grade));
